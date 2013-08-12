@@ -1,7 +1,7 @@
-<li id="L<%= incomplete_task.id %>">
+<%= named_list(incomplete_task.id) do %>
 	<%= content_tag 'span', 'Move', class: 'handle', data: { url: reposition_task_path(incomplete_task) } %>
 	<%= checkbox_for_task incomplete_task, complete_task_path(incomplete_task) %>
 	<%= label_for incomplete_task %>
 	<%= link_to 'Edit', edit_task_path(incomplete_task), remote: true %>
 	<%= link_to_remove incomplete_task %>
-</li>
+<% end %>

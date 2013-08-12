@@ -71,7 +71,13 @@ $ ->
 			this.prependAndHighlight("#complete-tasks", task)
 		
 		removeTask: (taskId) ->
-			$("#t" + taskId).closest("li").remove()
+			$("#L" + taskId).remove()
+			
+		replaceHtml: (taskId, html) ->
+			$("#L" + taskId).html(html)
+
+		replaceRow: (taskId, html) ->
+			$("#L" + taskId).replaceWith(html)
 			
 		prepareFormForNextEntry: ->
 			$("#task_title").val('').focus()

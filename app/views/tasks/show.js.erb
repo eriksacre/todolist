@@ -1,1 +1,1 @@
-$("#L<%= @task.id %>").html("<%= j render("incomplete_task", incomplete_task: @task) %>")
+list.replaceRow("<%= @task.id %>", "<%= j render("incomplete_task", incomplete_task: @task) %>")

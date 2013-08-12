@@ -5,7 +5,7 @@
 	<br>
 	<%= f.submit %>
 	<% if task.new_record? %>
-		<a href="#" id="cancel-task-form">I'm done adding tasks</a>
+		<%= link_to "I'm done adding tasks", '#', id: 'cancel-task-form' %>
 	<% else %>
 		or <%= link_to "Cancel", task_path(task), remote: true %>
 	<% end %>

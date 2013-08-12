@@ -1,1 +1,1 @@
-$("#L<%= @task.id %>").html("<%= j render("form", task: @task) %>")
+list.replaceHtml("<%= @task.id %>", "<%= j render("form", task: @task) %>")
