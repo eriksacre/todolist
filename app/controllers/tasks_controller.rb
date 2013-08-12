@@ -11,7 +11,7 @@ class TasksController < ApplicationController
     @task = DeleteTask.new(params[:id]).run
   end
   
-  def update
+  def reposition
     @task = UpdateTaskPosition.new(params[:id], task_position_params).run
   end
   

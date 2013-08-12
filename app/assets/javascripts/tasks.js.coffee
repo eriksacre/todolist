@@ -53,7 +53,7 @@ $ ->
 	$("#incomplete-tasks").bind 'sortupdate', (e, ui) ->
 		mover = ui.item.children().first('.handle')
 		data = { task: { position: ui.item.index() } }
-		ajaxUpdater.update(mover.get(0), 'PUT', data)
+		ajaxUpdater.update(mover.get(0), 'POST', data)
 
 	# We wait to capture a mousedown on a move-handle before initializing the
 	# sortable feature set.
