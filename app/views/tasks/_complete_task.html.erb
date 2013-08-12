@@ -1,6 +1,6 @@
-<%= named_list(complete_task.id) do %>
-	<%= checkbox_for_task complete_task, reopen_task_path(complete_task) %>
-	<span class="date">(<%= complete_task.updated_at_for_user %>)</span>
-	<%= label_for complete_task %>
-	<%= link_to_remove complete_task %>
+<%= named_list(task.id) do %>
+	<%= checkbox_for_task task, reopen_task_path(task) %>
+	<span class="date">(<%= task.updated_at_for_user %>)</span>
+	<%= label_for task %>
+	<%= link_to_remove task %>
 <% end %>

@@ -1,5 +1,5 @@
 class TaskListExhibit < Exhibit
-  exhibit_query :todo, :completed
+  exhibit_query :todo, :completed, :blank_task
   
   def self.applicable_to?(object)
     object.is_a?(TaskList)

@@ -100,6 +100,18 @@ class Exhibit < SimpleDelegator
   def class
     __getobj__.class
   end
+
+  def kind_of?(klass)
+    __getobj__.kind_of?(klass)
+  end
+  
+  def instance_of?(klass)
+    __getobj__.instance_of?(klass)
+  end
+  
+  # def is_a?(klass)
+  #   __getobj__.is_a?(klass)
+  # end
   
   def exhibited?
     true
