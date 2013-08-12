@@ -1,0 +1,12 @@
+<%= form_for task, remote: true do |f| %>
+	<%= f.label :title %>
+	<%= f.text_field :title %>
+	<div class="spinner"></div>
+	<br>
+	<%= f.submit %>
+	<% if task.new_record? %>
+		<a href="#" id="cancel-task-form">I'm done adding tasks</a>
+	<% else %>
+		or <%= link_to "Cancel", task_path(task), remote: true %>
+	<% end %>
+<% end %>

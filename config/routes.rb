@@ -1,5 +1,5 @@
 Todolist::Application.routes.draw do
-  resources :tasks, only: [:index, :show, :create, :destroy] do
+  resources :tasks, only: [:index, :show, :create, :destroy, :update, :edit] do
     member do
       post 'complete'
       post 'reopen'

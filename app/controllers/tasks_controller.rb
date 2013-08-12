@@ -11,6 +11,19 @@ class TasksController < ApplicationController
     @task = DeleteTask.new(params[:id]).run
   end
   
+  def edit
+    @task = Task.find(params[:id])
+  end
+  
+  def update
+    @task = UpdateTask.new(params[:id], params[:task][:title]).run
+    render "show"
+  end
+  
+  def show
+    @task = Task.find(params[:id])
+  end
+  
   def reposition
     @task = UpdateTaskPosition.new(params[:id], task_position_params).run
   end

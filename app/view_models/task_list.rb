@@ -8,4 +8,8 @@ class TaskList
     @completed ||= Task.completed
     @completed
   end
+  
+  def blank_task
+    Task.new
+  end
 end
