@@ -2,6 +2,20 @@
 
 Yet another to do app in Rails.
 
-The sole purpose of this app is to experiment with some different techniques, such
-as Exhibits (Objects on Rails), view objects, ...
+The sole purpose of this app is to experiment with some different techniques:
 
+* Exhibits (as described in the book Objects on Rails)
+
+* View models
+
+* Sortable list without pulling in jQuery UI
+
+* Remote calls, returning JS to the browser
+
+* Repositioning logic without loading and storing entire list
+
+* Turning on sortable behaviour at the moment its needed instead of upon page load
+
+* Isolating business logic in services or interactors
+
+* Keeping conditionals out of the view templates
