@@ -1,7 +1,7 @@
 <%= named_list(task.id) do %>
 	<%= content_tag 'span', 'Move', class: 'handle', data: { url: reposition_task_path(task) } %>
-	<%= checkbox_for_task task, complete_task_path(task) %>
-	<%= label_for task %>
+	<%= task.checkbox_for_task self, complete_task_path(task) %>
+	<%= task.label_for self %>
 	<%= link_to 'Edit', edit_task_path(task), remote: true %>
 	<%= link_to_remove task %>
 <% end %>

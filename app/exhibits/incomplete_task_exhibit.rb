@@ -1,4 +1,4 @@
-class IncompleteTaskExhibit < Exhibit
+class IncompleteTaskExhibit < TaskExhibit
   def self.applicable_to?(object)
     object.is_a?(Task) && !object.completed
   end

@@ -1,4 +1,4 @@
-class CompleteTaskExhibit < Exhibit
+class CompleteTaskExhibit < TaskExhibit
   def self.applicable_to?(object)
     object.is_a?(Task) && object.completed
   end
