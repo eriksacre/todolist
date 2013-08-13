@@ -1,11 +1,13 @@
 class CreateTask
-  def initialize(params)
-    @params = params.merge(completed: false)
+  def initialize(title)
+    @title = title
   end
   
   def run
-    task = TaskPositionService.append(Task.create!(@params))
-    task.save!
-    task
+    Task.create! do |task|
+      task.title = @title
+      task.completed = false
+      TaskPositionService.append(task)
+    end
   end
 end

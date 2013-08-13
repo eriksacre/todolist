@@ -4,7 +4,7 @@ class DeleteTask
   end
   
   def run
-    TaskPositionService.remove(Task.find(@task_id)).save!
+    TaskPositionService.remove(Task.find(@task_id))
     Task.destroy(@task_id)
   end
 end

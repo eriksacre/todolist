@@ -1,11 +1,11 @@
 class UpdateTaskPosition
-  def initialize(id, params)
+  def initialize(id, new_position)
     @id = id
-    @params = params
+    @new_position = new_position
   end
   
   def run
-    task = TaskPositionService.move(Task.find(@id), @params[:position])
+    task = TaskPositionService.move(Task.find(@id), @new_position)
     task.save!
     task
   end

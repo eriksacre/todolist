@@ -4,44 +4,48 @@ class TasksController < ApplicationController
   end
   
   def create
-    @task = exhibit(CreateTask.new(task_params).run)
+    @task = exhibit(CreateTask.new(title).run)
   end
   
   def destroy
-    @task = DeleteTask.new(params[:id]).run
+    @task = exhibit(DeleteTask.new(task_id).run)
   end
   
   def edit
-    @task = exhibit(Task.find(params[:id]))
+    @task = exhibit(Task.find(task_id))
   end
   
   def update
-    @task = UpdateTask.new(params[:id], params[:task][:title]).run
+    @task = exhibit(UpdateTask.new(task_id, title).run)
     render "show"
   end
   
   def show
-    @task = Task.find(params[:id])
+    @task = exhibit(Task.find(task_id))
   end
   
   def reposition
-    @task = UpdateTaskPosition.new(params[:id], task_position_params).run
+    @task = exhibit(UpdateTaskPosition.new(task_id, position).run)
   end
   
   def complete
-    @task = exhibit(TaskCompleted.new(params[:id]).run)
+    @task = exhibit(TaskCompleted.new(task_id).run)
   end
   
   def reopen
-    @task = exhibit(ReopenTask.new(params[:id]).run)
+    @task = exhibit(ReopenTask.new(task_id).run)
   end
   
   private
-    def task_params
-      params.require(:task).permit(:title)
+    def task_id
+      params[:id]
     end
     
-    def task_position_params
-      params.require(:task).permit(:position)
+    def title
+      params[:task][:title]
+    end
+
+    def position
+      params[:task][:position]
     end
 end
