@@ -1,8 +1,8 @@
 $ ->
 	$("#add-task").click (event) ->
-		$(this).hide();
-		$("#add-task-form").show();
-		$("#task_title").focus();
+		$(this).hide()
+		$("#add-task-form").show()
+		$("#task_title").focus()
 		event.preventDefault()
 		
 	$("#cancel-task-form").click (event) ->
@@ -10,14 +10,6 @@ $ ->
 		$("#add-task").show()
 		event.preventDefault()
 		
-	$("#add-task-form form").submit ->
-		$("#add-task-form form input[type=submit]").attr("disabled", "disabled")
-
-	$("#add-task-form form").on "ajax:before", ->
-		$(".spinner").addClass("spinning")
-
-	$("#add-task-form form").on "ajax:complete", ->
-		$(".spinner").removeClass("spinning")
 
 	$(document).on 'click', 'input[type=checkbox].todo', ->
 		ajaxUpdater.update(this)
@@ -59,7 +51,7 @@ $ ->
 	# sortable feature set.
 	document.addEventListener "mousedown", (event) ->
 			if ($(event.target).closest(".handle").length)
-				$("#incomplete-tasks").sortable("destroy").sortable({ handle: '.handle' })
+				$(event.target).closest(".sortable").sortable("destroy").sortable({ handle: '.handle' })
 		, true
 		
 	# Here are methods exposed to the JS templates
@@ -71,20 +63,23 @@ $ ->
 			this.prependAndHighlight("#complete-tasks", task)
 		
 		removeTask: (taskId) ->
-			$("#L" + taskId).remove()
+			$("#L#{taskId}").remove()
 			
 		replaceHtml: (taskId, html) ->
-			$("#L" + taskId).html(html)
+			$("#L#{taskId}").html(html)
 
 		replaceRow: (taskId, html) ->
-			$("#L" + taskId).replaceWith(html)
+			$("#L#{taskId}").replaceWith(html)
+			
+		focusOnText: (taskId) ->
+			$("#edit_task_#{taskId} input[name='task[title]']").focus()
 			
 		prepareFormForNextEntry: ->
 			$("#task_title").val('').focus()
 			$("#add-task-form form input[type=submit]").removeAttr("disabled")
 			
-		highlightUpdatedPosition: (position) ->
-			$("#incomplete-tasks").children('li').eq(position).highlight()
+		highlightTask: (taskId) ->
+			$("#L#{taskId}").highlight()
 			
 		appendAndHighlight: (id, task) ->
 			$(id).append(task)
@@ -94,4 +89,18 @@ $ ->
 			$(id).prepend(task)
 			$(id).children('li').first().highlight()
 
-		
+		attachFormEvents: (taskId) ->
+			id = "#edit_task_#{taskId}"
+			this.attachFormEventsForId(id)
+			
+		attachFormEventsForId: (id) ->
+			$(id).on "submit", ->
+				$("#{id} input[type=submit]").attr("disabled", "disabled")
+			$(id).on "ajax:before", ->
+				$("#{id} .spinner").addClass("spinning")
+			$(id).on "ajax:complete", ->
+				$("#{id} .spinner").removeClass("spinning")
+
+	list.attachFormEventsForId("#new_task")		
+
+

@@ -1,1 +1,3 @@
 list.replaceHtml("<%= @task.id %>", "<%= j render("form", task: @task) %>")
+list.focusOnText(<%= @task.id %>)
+list.attachFormEvents(<%= @task.id %>)
