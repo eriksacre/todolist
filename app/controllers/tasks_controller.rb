@@ -38,7 +38,7 @@ class TasksController < ApplicationController
   
   private
     def task_id
-      params[:id]
+      params[:id].to_i
     end
     
     def title
@@ -46,6 +46,6 @@ class TasksController < ApplicationController
     end
 
     def position
-      params[:task][:position]
+      params[:task][:position].to_i
     end
 end
