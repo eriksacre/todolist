@@ -29,7 +29,7 @@ class TasksController < ApplicationController
   end
   
   def complete
-    @task = exhibit(transactional(TaskCompleted.new(task_id)).run)
+    @task = exhibit(transactional(CompleteTask.new(task_id)).run)
   end
   
   def reopen
