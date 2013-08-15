@@ -19,3 +19,9 @@ The sole purpose of this app is to experiment with some different techniques:
 * Isolating business logic in services or interactors
 
 * Keeping conditionals out of the view templates
+
+* Using decorators for transaction handling
+
+* Isolating business logic
+
+Although the app (mostly) works, it is a playground to test techniques. It does not have a pretty UI and foolproof error handling.

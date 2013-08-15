@@ -4,7 +4,16 @@ class TasksController < ApplicationController
   end
   
   def create
-    @task = bc :create_task, title
+    begin
+      @task = bc :create_task, title
+    rescue ActiveRecord::RecordInvalid => e
+      # Why exceptions instead of checking return value?
+      # Because transactions need the exception to rollback
+      # Exception local to create
+      # Response can be very specific
+      @errors = e.record.errors
+      render template: "tasks/error"
+    end
   end
   
   def destroy
@@ -47,5 +56,12 @@ class TasksController < ApplicationController
 
     def position
       params[:task][:position].to_i
+    end
+
+    # Global catch for all controller methods
+    # Works if app has some centralized response to errors
+    rescue_from ActiveRecord::RecordInvalid do |exception|
+      @errors = exception.record.errors
+      render template: "tasks/error"
     end
 end
