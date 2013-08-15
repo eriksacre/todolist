@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   
   include ExhibitsHelper
+  include ResultTellerHelper
   include TransactionalHelper
   include BusinessServiceCallHelper
   

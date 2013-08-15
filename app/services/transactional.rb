@@ -1,4 +1,4 @@
-class Transactional < SimpleDelegator
+class Transactional < BusinessDelegator
   def run
     ActiveRecord::Base.transaction do
       super
