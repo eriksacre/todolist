@@ -7,13 +7,13 @@ class Exhibit < SimpleDelegator
   end
   
   def self.exhibits
-    @@exhibits
-    # [
-    #   IncompleteTaskExhibit,
-    #   CompleteTaskExhibit,
-    #   TaskListExhibit,
-    #   EnumerableExhibit
-    # ]
+    # @@exhibits
+    [
+      IncompleteTaskExhibit,
+      CompleteTaskExhibit,
+      TaskListExhibit,
+      EnumerableExhibit
+    ]
   end
   
   def self.inherited(child)

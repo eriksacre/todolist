@@ -4,6 +4,28 @@
 
 body {
 	line-height: 1.5em;
+	background: #eef;
+}
+
+#content {
+	clear: both;
+	width: 960px;
+	margin: 20px auto;
+	background: #fff;
+	padding: 40px;
+	border: 1px solid #eee;
+}
+
+.alert {
+	text-align: center;
+	background: #933;
+	color: #fff;
+}
+
+.notice {
+	text-align: center;
+	background: #ffc;
+	color: #000;
 }
 
 #complete-tasks {
@@ -39,10 +61,6 @@ body {
 	background: url(ajax-loader.gif) left top no-repeat;
 }
 
-.content {
-	margin-right: 460px;
-}
-
 .sortable-dragging {
 	border: 2px solid #f00;
 }
@@ -75,4 +93,9 @@ input[type="text"] {
 .error_msg {
 	color: #f00;
 	font-weight: bold;
+}
+
+.user-info {
+	font-size: 0.9em;
+	text-align: right;
 }
