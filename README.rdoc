@@ -22,6 +22,6 @@ The sole purpose of this app is to experiment with some different techniques:
 
 * Using decorators for transaction handling
 
-* Isolating business logic
+* Making it really easy to call business services, incl. required decorators
 
 Although the app (mostly) works, it is a playground to test techniques. It does not have a pretty UI and foolproof error handling.

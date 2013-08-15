@@ -5,9 +5,9 @@ class UpdateTask
   end
   
   def run
-    task = Task.find(@task_id)
-    task.title = @title
-    task.save!
-    task
+    Task.find(@task_id).tap do |task|
+      task.title = @title
+      task.save!
+    end
   end
 end

@@ -4,10 +4,11 @@ class CreateTask
   end
   
   def run
-    Task.create! do |task|
+    Task.new.tap do |task|
       task.title = @title
       task.completed = false
       TaskPositionService.append(task)
+      task.save!
     end
   end
 end

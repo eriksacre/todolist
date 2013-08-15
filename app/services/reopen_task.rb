@@ -4,10 +4,10 @@ class ReopenTask
   end
   
   def run
-    task = Task.find(@task_id)
-    TaskPositionService.append(task)
-    task.completed = false
-    task.save!
-    task
+    Task.find(@task_id).tap do |task|
+      TaskPositionService.append(task)
+      task.completed = false
+      task.save!
+    end
   end
 end

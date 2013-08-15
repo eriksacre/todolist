@@ -4,7 +4,9 @@ class DeleteTask
   end
   
   def run
-    TaskPositionService.remove(Task.find(@task_id))
-    Task.destroy(@task_id)
+    Task.find(@task_id).tap do |task|
+      TaskPositionService.remove(task) if !task.position.nil?
+      task.destroy
+    end
   end
 end

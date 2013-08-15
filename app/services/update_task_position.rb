@@ -5,8 +5,9 @@ class UpdateTaskPosition
   end
   
   def run
-    task = TaskPositionService.move(Task.find(@id), @new_position)
-    task.save!
-    task
+    Task.find(@id).tap do |task|
+      TaskPositionService.move(task, @new_position)
+      task.save!
+    end
   end
 end

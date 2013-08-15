@@ -4,10 +4,10 @@ class CompleteTask
   end
   
   def run
-    task = Task.find(@task_id)
-    TaskPositionService.remove(task)
-    task.completed = true
-    task.save!
-    task
+    Task.find(@task_id).tap do |task|
+      TaskPositionService.remove(task)
+      task.completed = true
+      task.save!
+    end
   end
 end
