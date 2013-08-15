@@ -4,11 +4,11 @@ class TasksController < ApplicationController
   end
   
   def create
-    @task = exhibit(CreateTask.new(title).run)
+    @task = exhibit(transactional(CreateTask.new(title)).run)
   end
   
   def destroy
-    @task = exhibit(DeleteTask.new(task_id).run)
+    @task = exhibit(transactional(DeleteTask.new(task_id)).run)
   end
   
   def edit
@@ -16,7 +16,7 @@ class TasksController < ApplicationController
   end
   
   def update
-    @task = exhibit(UpdateTask.new(task_id, title).run)
+    @task = exhibit(transactional(UpdateTask.new(task_id, title)).run)
     render "show"
   end
   
@@ -25,15 +25,15 @@ class TasksController < ApplicationController
   end
   
   def reposition
-    @task = exhibit(UpdateTaskPosition.new(task_id, position).run)
+    @task = exhibit(transactional(UpdateTaskPosition.new(task_id, position)).run)
   end
   
   def complete
-    @task = exhibit(TaskCompleted.new(task_id).run)
+    @task = exhibit(transactional(TaskCompleted.new(task_id)).run)
   end
   
   def reopen
-    @task = exhibit(ReopenTask.new(task_id).run)
+    @task = exhibit(transactional(ReopenTask.new(task_id)).run)
   end
   
   private
