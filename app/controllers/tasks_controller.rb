@@ -1,39 +1,39 @@
 class TasksController < ApplicationController
   def index
-    @task_list = exhibit(TaskList.new)
+    @task_list = e TaskList.new
   end
   
   def create
-    @task = exhibit(transactional(CreateTask.new(title)).run)
+    @task = bc :create_task, title
   end
   
   def destroy
-    @task = exhibit(transactional(DeleteTask.new(task_id)).run)
+    @task = bc :delete_task, task_id
   end
   
   def edit
-    @task = exhibit(Task.find(task_id))
+    @task = e Task.find(task_id)
   end
   
   def update
-    @task = exhibit(transactional(UpdateTask.new(task_id, title)).run)
+    @task = bc :update_task, task_id, title
     render "show"
   end
   
   def show
-    @task = exhibit(Task.find(task_id))
+    @task = e Task.find(task_id)
   end
   
   def reposition
-    @task = exhibit(transactional(UpdateTaskPosition.new(task_id, position)).run)
+    @task = bc :update_task_position, task_id, position
   end
   
   def complete
-    @task = exhibit(transactional(CompleteTask.new(task_id)).run)
+    @task = bc :complete_task, task_id
   end
   
   def reopen
-    @task = exhibit(transactional(ReopenTask.new(task_id)).run)
+    @task = bc :reopen_task, task_id
   end
   
   private
