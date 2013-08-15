@@ -25,8 +25,13 @@ class TasksController < ApplicationController
   end
   
   def update
-    @task = bc :update_task, task_id, title
-    render "show"
+    begin
+      @task = bc :update_task, task_id, title
+      render "show"
+    rescue ActiveRecord::RecordInvalid => exception
+      @task = e exception.record
+      render "edit"
+    end
   end
   
   def show

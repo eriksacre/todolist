@@ -1,4 +1,7 @@
 <%= form_for task, remote: true do |f| %>
+	<% task.errors.full_messages.each do |msg| %>
+		<div class="error_msg"><%= msg %></div>
+	<% end %>
 	<%= f.label :title %>
 	<%= f.text_field :title %>
 	<div class="spinner"></div>
