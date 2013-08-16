@@ -17,6 +17,7 @@ class ApplicationController < ActionController::Base
     helper_method :current_user
     
     def authorize
-      redirect_to login_url, alert: "Not authorized" if current_user.nil?
+      path = login_url + "?return=" + CGI.escape(request.original_fullpath)
+      redirect_to path, alert: "You must be logged in to access that page" if current_user.nil?
     end
 end

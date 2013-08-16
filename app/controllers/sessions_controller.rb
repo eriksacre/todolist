@@ -2,6 +2,8 @@ class SessionsController < ApplicationController
   skip_before_action :authorize
   
   def new
+    return redirect_to root_url, notice: "You are already logged in" if current_user
+    @return = params[:return]
   end
 
   def create
@@ -9,7 +11,7 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:password])
       reset_session # Mitigate fixation attack
       session[:user_id] = user.id
-      redirect_to root_url, notice: "Logged in!"
+      redirect_to params[:return], notice: "Logged in!"
     else
       flash.now.alert = "Email or password is invalid."
       render "new"
