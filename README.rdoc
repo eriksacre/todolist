@@ -24,4 +24,6 @@ The sole purpose of this app is to experiment with some different techniques:
 
 * Making it really easy to call business services, incl. required decorators
 
+* Authentication without plugins -- not necessarily smart, but educational (based on various Railscasts episodes)
+
 Although the app (mostly) works, it is a playground to test techniques. It does not have a pretty UI and foolproof error handling.
