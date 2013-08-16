@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  skip_before_action :authorize
+  skip_before_action :ensure_authenticated
   
   def new
     @user = User.new
@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      cookies.signed[:auth_token] = @user.auth_token
+      authenticate @user
       redirect_to root_url, notice: "Thank you for signing up!"
     else
       render "new"

@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  skip_before_action :authorize
+  skip_before_action :ensure_authenticated
   
   def new
     return redirect_to root_url, notice: "You are already logged in" if current_user
@@ -9,11 +9,7 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by email: params[:email]
     if user && user.authenticate(params[:password])
-      if params[:remember_me]
-        cookies.permanent.signed[:auth_token] = user.auth_token
-      else
-        cookies.signed[:auth_token] = user.auth_token
-      end
+      authenticate user, params[:remember_me]
       redirect_to params[:return], notice: "Logged in!"
     else
       flash.now.alert = "Email or password is invalid."
@@ -22,7 +18,7 @@ class SessionsController < ApplicationController
   end
   
   def destroy
-    cookies.delete(:auth_token)
+    invalidate_authentication
     redirect_to login_path, notice: "Logged out!"
   end
 end

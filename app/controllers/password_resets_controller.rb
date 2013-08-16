@@ -1,5 +1,5 @@
 class PasswordResetsController < ApplicationController
-  skip_before_action :authorize
+  skip_before_action :ensure_authenticated
 
   def new
   end
@@ -19,7 +19,7 @@ class PasswordResetsController < ApplicationController
     if @user.password_reset_sent_at < 2.hours.ago
       redirect_to new_password_reset_path, :alert => "Password reset has expired."
     elsif @user.new_password(user_params)
-      cookies.signed[:auth_token] = @user.auth_token
+      authenticate @user
       redirect_to root_url, :notice => "Password has been reset."
     else
       render :edit
