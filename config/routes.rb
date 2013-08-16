@@ -14,6 +14,13 @@ Todolist::Application.routes.draw do
       post 'reposition'
     end
   end
+  
+  namespace :api, defaults: {format: 'json'} do
+    namespace :v1 do
+      resources :tasks, except: [:new, :edit]
+    end
+  end
+  
   root 'tasks#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
