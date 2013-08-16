@@ -5,6 +5,7 @@ Todolist::Application.routes.draw do
 
   resources :sessions, only: [:new, :create, :destroy]
   resources :users, only: [:new, :create]
+  resources :password_resets, only: [:new, :create, :edit, :update]
 
   resources :tasks, only: [:index, :show, :create, :destroy, :update, :edit] do
     member do
