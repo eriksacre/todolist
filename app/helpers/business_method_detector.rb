@@ -13,7 +13,7 @@ class BusinessMethodDetector
     @result = nil
   end
   
-  def contains(*keys)
+  def for(*keys)
     return if @result != nil
     @result = yield if params_contain_exclusively @params, keys
   end

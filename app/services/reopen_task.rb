@@ -5,7 +5,7 @@ class ReopenTask
   
   def run
     Task.find(@task_id).tap do |task|
-      # May only happen on completed tasks
+      raise ArgumentError.new("Task is already open.") if !task.completed
       TaskPositionService.append(task)
       task.completed = false
       task.save!

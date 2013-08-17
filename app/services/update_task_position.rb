@@ -6,7 +6,7 @@ class UpdateTaskPosition
   
   def run
     Task.find(@id).tap do |task|
-      # May only be set on non-completed items!
+      raise ArgumentError.new("A completed task does not have a position") if task.completed
       TaskPositionService.move(task, @new_position)
       task.save!
     end

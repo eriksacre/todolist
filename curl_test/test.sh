@@ -25,6 +25,48 @@ echo
 echo
 echo
 
+echo "4b. Change the position of a task"
+curl -w "%{http_code}" -u "47uP4wQ-356qpg0VegikVA:x" -H 'Content-Type: application/json' -X PUT -d '{ "position": 3 }' http://todolist.dev/api/v1/tasks/$1
+echo
+echo
+echo
+
+echo "4c. Complete a task"
+curl -w "%{http_code}" -u "47uP4wQ-356qpg0VegikVA:x" -H 'Content-Type: application/json' -X PUT -d '{ "completed": true }' http://todolist.dev/api/v1/tasks/$1
+echo
+echo
+echo
+
+echo "4c2. Complete a task that is already completed"
+curl -w "%{http_code}" -u "47uP4wQ-356qpg0VegikVA:x" -H 'Content-Type: application/json' -X PUT -d '{ "completed": true }' http://todolist.dev/api/v1/tasks/$1
+echo
+echo
+echo
+
+echo "4c3. Change the position of a completed task"
+curl -w "%{http_code}" -u "47uP4wQ-356qpg0VegikVA:x" -H 'Content-Type: application/json' -X PUT -d '{ "position": 3 }' http://todolist.dev/api/v1/tasks/$1
+echo
+echo
+echo
+
+echo "4d. Reopen a task"
+curl -w "%{http_code}" -u "47uP4wQ-356qpg0VegikVA:x" -H 'Content-Type: application/json' -X PUT -d '{ "completed": false }' http://todolist.dev/api/v1/tasks/$1
+echo
+echo
+echo
+
+echo "4d2. Reopen a task that is already open"
+curl -w "%{http_code}" -u "47uP4wQ-356qpg0VegikVA:x" -H 'Content-Type: application/json' -X PUT -d '{ "completed": false }' http://todolist.dev/api/v1/tasks/$1
+echo
+echo
+echo
+
+echo "4e. Invalid field combo"
+curl -w "%{http_code}" -u "47uP4wQ-356qpg0VegikVA:x" -H 'Content-Type: application/json' -X PUT -d '{ "completed": true, "position": 8 }' http://todolist.dev/api/v1/tasks/$1
+echo
+echo
+echo
+
 echo "5. Delete a task"
 curl -w "%{http_code}" -u "47uP4wQ-356qpg0VegikVA:x" -H 'Content-Type: application/json' -X DELETE http://todolist.dev/api/v1/tasks/$1
 echo
