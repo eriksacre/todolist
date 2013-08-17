@@ -14,7 +14,11 @@ module Api
         @current_user
       end
       helper_method :current_user
-
+  
+      def find_business_method(params, &block)
+        BusinessMethodDetector.find_business_method(params, &block)
+      end
+      
       rescue_from Exception do |exception|
         @exception = exception
         render "exception", status: :bad_request

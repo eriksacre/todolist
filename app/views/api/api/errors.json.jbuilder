@@ -1,4 +1,4 @@
-json.array! @errors.full_messages do |json, error|
+json.array! @errors.full_messages do |error|
 
   json.error error
 

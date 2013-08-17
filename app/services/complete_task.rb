@@ -5,6 +5,7 @@ class CompleteTask
   
   def run
     Task.find(@task_id).tap do |task|
+      # May only happen if not yet completed
       TaskPositionService.remove(task)
       task.completed = true
       task.save!

@@ -15,11 +15,12 @@ module Api
       end
       
       def update
-        # Should we add specific paths to handle complete, reopen and reposition,
-        # or should we check the parameters to determine what to do?
-        # RESTfull versus convenient
-        @task = ac(:update_task, params[:id], params[:title])
-        render "show" # We could choose to send 204 here as well
+        @task = find_business_method(params[:task]) do |method, params|
+          method.contains(:title) { ac(:update_task, task_id, params[:title]) }
+          method.contains(:position) { ac(:update_task_position, task_id, [:position]) }
+          method.contains(:completed) { params[:completed] ? ac(:reopen_task, task_id) : ac(:complete_task, task_id) }
+        end
+        render "show"
       end
       
       def destroy
@@ -30,6 +31,10 @@ module Api
       private
         def task_params
           params.require(:task).permit(:title, :completed, :position)
+        end
+        
+        def task_id
+          params[:id]
         end
     end
   end

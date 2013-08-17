@@ -5,6 +5,7 @@ class ReopenTask
   
   def run
     Task.find(@task_id).tap do |task|
+      # May only happen on completed tasks
       TaskPositionService.append(task)
       task.completed = false
       task.save!
