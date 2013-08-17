@@ -17,7 +17,14 @@ module Api
 
       rescue_from Exception do |exception|
         @exception = exception
-        render "error", status: :unprocessable_entity
+        render "exception", status: :bad_request
+      end
+      
+      # More specific exceptions must be below more generic ones
+      # for rescue_from!
+      rescue_from ActiveRecord::RecordInvalid do |exception|
+        @errors = exception.record.errors
+        render "errors", status: :unprocessable_entity
       end
   end
 end

@@ -30,4 +30,8 @@ curl -w "%{http_code}" -u "47uP4wQ-356qpg0VegikVA:x" -H 'Content-Type: applicati
 echo
 echo
 
+echo "6. Create a resource with validation error"
+curl -w "%{http_code}" -u "47uP4wQ-356qpg0VegikVA:x" -H 'Content-Type: application/json' -X POST -d '{ "titlex": "API generated task" }' http://todolist.dev/api/v1/tasks
+echo
+echo
 

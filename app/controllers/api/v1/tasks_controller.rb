@@ -11,7 +11,7 @@ module Api
       
       def create
         @task = ac(:create_task, params[:title])
-        render "show", status: 201
+        render "show", status: :created
       end
       
       def update
@@ -24,7 +24,7 @@ module Api
       
       def destroy
         Task.destroy(params[:id])
-        render nothing: true, status: 204
+        render nothing: true, status: :no_content
       end
       
       private
