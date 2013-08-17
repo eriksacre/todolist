@@ -28,4 +28,6 @@ The sole purpose of this app is to experiment with some different techniques:
 
 * JSON API using basic authentication (api token)
 
+* Making it easy to pick the right business method based on the JSON attributes provided, keeping things RESTful
+
 Although the app (mostly) works, it is a playground to test techniques. It does not have a pretty UI and foolproof error handling.
