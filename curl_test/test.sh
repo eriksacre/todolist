@@ -77,3 +77,18 @@ curl -w "%{http_code}" -u "47uP4wQ-356qpg0VegikVA:x" -H 'Content-Type: applicati
 echo
 echo
 
+echo "7. Find the API token for a given user, using the special me-resource"
+curl -w "%{http_code}" -u "erik.sacre@gmail.com:ok" -H 'Content-Type: application/json' http://todolist.dev/api/v1/me
+echo
+echo
+
+echo "7b. Find the API token for a given user, using the special me-resource, but passing a wrong email"
+curl -w "%{http_code}" -u "erik.sacred@gmail.com:ok" -H 'Content-Type: application/json' http://todolist.dev/api/v1/me
+echo
+echo
+
+echo "7c. Find the API token for a given user, using the special me-resource, but passing a wrong password"
+curl -w "%{http_code}" -u "erik.sacre@gmail.com:nok" -H 'Content-Type: application/json' http://todolist.dev/api/v1/me
+echo
+echo
+

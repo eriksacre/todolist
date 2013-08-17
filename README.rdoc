@@ -22,12 +22,18 @@ The sole purpose of this app is to experiment with some different techniques:
 
 * Using decorators for transaction handling
 
+* Letting a business service use tell, don't ask via a decorator (example: Tasks#update succeeded/failure)
+
 * Making it really easy to call business services, incl. required decorators
 
 * Authentication without plugins -- not necessarily smart, but educational (based on various Railscasts episodes)
 
 * JSON API using basic authentication (api token)
 
+* Special me-resource for the API allowing an API client to retrieve the API token for a user via email/password authentication
+
 * Making it easy to pick the right business method based on the JSON attributes provided, keeping things RESTful
+
+* Using a concern on models to make URLs more friendly
 
 Although the app (mostly) works, it is a playground to test techniques. It does not have a pretty UI and foolproof error handling.

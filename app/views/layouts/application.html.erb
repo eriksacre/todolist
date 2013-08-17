@@ -12,7 +12,9 @@
 
 	<div class="user-info">
 		<% if current_user %>
-			Logged in as <%= current_user.email %>. <%= link_to "Log out", logout_path, method: "delete" %>
+			Logged in as <%= current_user.email %>.
+			Your API-token is <%= current_user.api_token %>.
+			<%= link_to "Log out", logout_path, method: "delete" %>
 		<% end %>
 	</div>
 
