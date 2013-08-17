@@ -1,8 +1,6 @@
 module Api
   module V1
     class TasksController < Api::ApiController
-      respond_to :json
-      
       def index
         @tasks = Task.all
       end
@@ -12,16 +10,21 @@ module Api
       end
       
       def create
-        # TODO: Test with error-result + use correct template with success
-        respond_with ac(:create_task, params[:title])
+        @task = ac(:create_task, params[:title])
+        render "show", status: 201
       end
       
       def update
-        respond_with Task.update(params[:id], task_params)
+        # Should we add specific paths to handle complete, reopen and reposition,
+        # or should we check the parameters to determine what to do?
+        # RESTfull versus convenient
+        @task = ac(:update_task, params[:id], params[:title])
+        render "show" # We could choose to send 204 here as well
       end
       
       def destroy
-        respond_with Task.destroy(params[:id])
+        Task.destroy(params[:id])
+        render nothing: true, status: 204
       end
       
       private

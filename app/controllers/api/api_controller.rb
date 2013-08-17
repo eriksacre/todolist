@@ -15,5 +15,9 @@ module Api
       end
       helper_method :current_user
 
+      rescue_from Exception do |exception|
+        @exception = exception
+        render "error", status: :unprocessable_entity
+      end
   end
 end
