@@ -38,9 +38,9 @@ end
 
 group :test do
   gem 'mailcatcher'
-  gem 'database_cleaner'
   gem 'rspec-rails'
-  gem 'cucumber-rails'
+  # gem 'cucumber-rails', require: false  # At this time cucumber-rails is not yet compatible with Rails 4!
+  # gem 'database_cleaner'
 end
 
 # Use ActiveModel has_secure_password
