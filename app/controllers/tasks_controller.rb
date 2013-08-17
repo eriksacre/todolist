@@ -17,15 +17,15 @@ class TasksController < ApplicationController
   end
   
   def destroy
-    @task = bc :delete_task, task_id
+    @task = bc :delete_task, params_id
   end
   
   def edit
-    @task = e Task.find(task_id)
+    @task = e Task.find(params_id)
   end
   
   def update
-    bc :update_task, task_id, title
+    bc :update_task, params_id, title
   end
   
   def update_task_succeeded(task)
@@ -41,26 +41,22 @@ class TasksController < ApplicationController
   private :update_task_succeeded, :update_task_failed
   
   def show
-    @task = e Task.find(task_id)
+    @task = e Task.find(params_id)
   end
   
   def reposition
-    @task = bc :update_task_position, task_id, position
+    @task = bc :update_task_position, params_id, position
   end
   
   def complete
-    @task = bc :complete_task, task_id
+    @task = bc :complete_task, params_id
   end
   
   def reopen
-    @task = bc :reopen_task, task_id
+    @task = bc :reopen_task, params_id
   end
   
   private
-    def task_id
-      params[:id].to_i
-    end
-    
     def title
       params[:task][:title]
     end

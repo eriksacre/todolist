@@ -4,4 +4,6 @@ class Task < ActiveRecord::Base
   
   scope :todo, -> { where(completed: false).order(:position) }
   scope :completed, -> { where(completed: true).order("updated_at desc") }
+
+  include ReadableUrl
 end
