@@ -34,7 +34,13 @@ end
 
 group :development do
   gem 'rack-mini-profiler'
+end
+
+group :test do
   gem 'mailcatcher'
+  gem 'database_cleaner'
+  gem 'rspec-rails'
+  gem 'cucumber-rails'
 end
 
 # Use ActiveModel has_secure_password
