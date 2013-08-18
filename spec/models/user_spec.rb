@@ -1,16 +1,27 @@
-require 'spec_helper'
-
-# It would be desirable to get to the following:
-# require 'active_record_spec_helper'
-# require 'factories'
-# require 'user'
-#
-# This would only load ActiveRecord for this spec, instead of the full Rails environment
+require 'active_record_spec_helper'
+require 'factories'
+require 'user'
 
 describe User do
   describe "#send_password_reset" do
     let(:user) { FactoryGirl.create(:user) }
 
+    before :each do
+      # The following should be improved upon. I'm mocking and stubbing
+      # away dependencies on ActiveSupport and ActiveMailer,
+      # but in the process this spec needs to know too much about User's
+      # internals.
+      Time.stub(:zone).and_return(Time)
+      
+      mailer = Class.new
+      stub_const('Mailer', mailer)
+      mailer.should_receive(:deliver).at_least(1).times
+      
+      user_mailer = Class.new
+      stub_const('UserMailer', user_mailer)
+      user_mailer.should_receive(:password_reset).at_least(1).times.with(user).and_return(mailer)
+    end
+    
     it "generates a unique password_reset_token each time" do
       user.send_password_reset
       last_token = user.password_reset_token
@@ -25,7 +36,7 @@ describe User do
 
     it "delivers email to user" do
       user.send_password_reset
-      last_email.to.should include (user.email)
+      # last_email.to.should include (user.email)
     end
   end
 end
