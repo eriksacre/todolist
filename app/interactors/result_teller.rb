@@ -15,9 +15,9 @@ class ResultTeller < BusinessDelegator
   
   private
     def tell_caller(method_suffix, value)
-      method = (delegated_class.name.underscore + method_suffix).to_sym
+      method = (delegated_class.name.underscore.split('/')[1] + method_suffix).to_sym
       @caller.send method, value if @caller.respond_to? method, true
-      raise value if !@caller.respond_to?(method) && value.is_a?(Exception)
+      raise value if !@caller.respond_to?(method, true) && value.is_a?(Exception)
       value
     end
     

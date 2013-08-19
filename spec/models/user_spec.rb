@@ -36,7 +36,7 @@ describe User do
 
     it "delivers email to user" do
       user.send_password_reset
-      # last_email.to.should include (user.email)
+      # Tested by means of user_mailer.should_receive...
     end
   end
 end

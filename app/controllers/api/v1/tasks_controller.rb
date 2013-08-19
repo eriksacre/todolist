@@ -4,6 +4,8 @@ module Api
     # If the happy path fails, it should raise an exception.
     # Exceptions are caught and handled by the Api::ApiController.
     class TasksController < Api::ApiController
+      interactor :task
+      
       def index
         @tasks = TaskList.new
       end
@@ -32,7 +34,7 @@ module Api
       end
       
       def destroy
-        Task.destroy(params_id)
+        ac(:delete_task, params_id)
         render nothing: true, status: :no_content
       end
     end

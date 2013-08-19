@@ -1,4 +1,6 @@
 class TasksController < ApplicationController
+  interactor :task
+  
   def index
     @task_list = e TaskList.new
   end
