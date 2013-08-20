@@ -2,7 +2,7 @@ module BusinessMethodDetectionHelper
   def find_business_method(params, &block)
     method = BusinessMethodDetector.new(params)
     block.call method, params
-    raise ArgumentError.new("Request did not contain a valid combination of attributes") if method.result.nil?
+    raise ArgumentError.new("Request does not contain a valid combination of attributes") if method.result.nil?
     method.result
   end
   

@@ -15,7 +15,9 @@ module Api
       end
       
       def create
-        @task = ac(:create_task, params[:title])
+        @task = find_business_method(params[:task]) do |method, params|
+          method.for(:title) { ac(:create_task, params[:title]) }
+        end
         render "show", status: :created
       end
       
