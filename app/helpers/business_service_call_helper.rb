@@ -12,12 +12,12 @@ module BusinessServiceCallHelper
   alias :ac :api_service_call
   
   def service_object(service_class, *params)
-    "#{interactor.to_s}_interactors/#{service_class.to_s}".camelize.constantize.new *params
+    "#{interactor_namespace.to_s}_interactors/#{service_class.to_s}".camelize.constantize.new *params
   end
 
   module ClassMethods
-    def interactor(namespace)
-      define_method(:interactor) do
+    def interactor_namespace(namespace)
+      define_method(:interactor_namespace) do
         namespace
       end
     end

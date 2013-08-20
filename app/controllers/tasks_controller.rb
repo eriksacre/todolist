@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  interactor :task
+  interactor_namespace :task
   
   def index
     @task_list = e TaskList.new

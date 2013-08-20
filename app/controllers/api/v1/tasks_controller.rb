@@ -4,7 +4,7 @@ module Api
     # If the happy path fails, it should raise an exception.
     # Exceptions are caught and handled by the Api::ApiController.
     class TasksController < Api::ApiController
-      interactor :task
+      interactor_namespace :task
       
       def index
         @tasks = TaskList.new
