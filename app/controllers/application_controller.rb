@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   include ResultTellerHelper
   include TransactionalHelper
   include BusinessServiceCallHelper
+  include BusinessMethodDetectionHelper
   include AuthenticationHelper
   
   before_action :ensure_authenticated
