@@ -5,7 +5,7 @@ require 'task_interactors/complete_task'
 describe TaskInteractors::CompleteTask do
   let(:task) { DataObject.new id: 1, title: 'Test', completed: false, position: 3 }
   subject { TaskInteractors::CompleteTask.new(task.id) }
-  before :each { mock_finder 'Task', task }
+  before(:each) { mock_finder 'Task', task }
   
   context "Error" do
     it "Should complain if task is already completed" do
@@ -37,14 +37,12 @@ describe TaskInteractors::CompleteTask do
     end
     
     it "Should remove position upon completion" do
+      # Tested by should_receive(:remove)
       result
     end
     
     it "Should set completed" do
       result.completed.should be_true
-    end
-    
-    it "Should set the completion time" do
       result.completed_at.should == ref_time
     end
   end
