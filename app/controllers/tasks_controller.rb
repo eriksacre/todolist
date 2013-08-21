@@ -73,4 +73,10 @@ class TasksController < ApplicationController
       @errors = exception.record.errors
       render template: "tasks/error"
     end
+
+    # Handle business method problems. The cause is often concurrency
+    rescue_from ArgumentError do |exception|
+      error = exception.message
+      render js: "alert('#{error}'); window.location.reload();"
+    end
 end
