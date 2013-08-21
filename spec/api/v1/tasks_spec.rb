@@ -73,6 +73,40 @@ describe "/api/v1/tasks", type: :api do
       end
     end
     
+    context "fetching a single open task" do
+      let(:task) { TaskInteractors::CreateTask.new("Test").run }
+      let(:url) { "/api/v1/tasks/#{task.id}-test"}
+      
+      it "Fetches the task" do
+        get url, {}, @env
+        response.code.should == "200"
+        json.should == {
+          "id" => task.id,
+          "title" => task.title,
+          "position" => 0,
+          "completed" => false,
+          "url" => api_v1_task_url(task)
+        }
+      end
+    end
+    
+    context "fetching a single completed task" do
+      let(:task) { t = TaskInteractors::CreateTask.new("Test").run; TaskInteractors::CompleteTask.new(t.id).run }
+      let(:url) { "/api/v1/tasks/#{task.id}-test"}
+      
+      it "Fetches the task" do
+        get url, {}, @env
+        response.code.should == "200"
+        json.should == {
+          "id" => task.id,
+          "title" => task.title,
+          "completed" => true,
+          "completed_at" => task.updated_at.to_formatted_s(:iso8601),
+          "url" => api_v1_task_url(task)
+        }
+      end
+    end
+    
     context "modifying an open task" do
       let(:task) { TaskInteractors::CreateTask.new("Test").run }
       let(:url) { "/api/v1/tasks/#{task.id}" }
@@ -105,6 +139,40 @@ describe "/api/v1/tasks", type: :api do
         put url, { title: "Updated", position: 3 }.to_json, @env
         response.code.should == "400"
         json.should == { "error" => "Request does not contain a valid combination of attributes" }
+      end
+    end
+    
+    context "modifying a completed task" do
+      let(:task) { t = TaskInteractors::CreateTask.new("Test").run; TaskInteractors::CompleteTask.new(t.id).run }
+      let(:url) { "/api/v1/tasks/#{task.id}" }
+      
+      it "Does not permit updating the position" do
+        put url, { position: 1 }.to_json, @env
+        response.code.should == "400"
+        json.should == { "error" => "A completed task does not have a position" }
+      end
+      
+      it "Does not permit completing the task" do
+        put url, { completed: true }.to_json, @env
+        response.code.should == "400"
+        json.should == { "error" => "Task is already completed" }
+      end
+      
+      it "Reopens the task" do
+        put url, { completed: false }.to_json, @env
+        response.code.should == "200"
+        json["completed"].should == false
+      end
+    end
+    
+    context "deleting a task" do
+      let(:task) { TaskInteractors::CreateTask.new("Test").run }
+      let(:url) { "/api/v1/tasks/#{task.id}" }
+      
+      it "Deletes the task" do
+        delete url, {}, @env
+        response.code.should == "204"
+        expect { Task.find(task.id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end

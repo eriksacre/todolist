@@ -9,6 +9,7 @@ module TaskInteractors
         raise ArgumentError.new("Task is already completed") if task.completed
         TaskPositionService.remove(task)
         task.completed = true
+        task.completed_at = Time.zone.now
         task.save!
       end
     end

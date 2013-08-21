@@ -1,6 +1,6 @@
 <%= named_list(task.id) do %>
 	<%= task.checkbox_for_task self, reopen_task_path(task) %>
-	<span class="date">(<%= task.updated_at_for_user %>)</span>
+	<span class="date">(<%= task.completed_at_for_user %>)</span>
 	<%= task.label_for self %>
 	<%= link_to_remove task %>
 <% end %>

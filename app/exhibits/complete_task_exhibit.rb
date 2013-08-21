@@ -7,8 +7,8 @@ class CompleteTaskExhibit < TaskExhibit
   #   "/tasks/complete_task"
   # end
   
-  def updated_at_for_user
-    updated_at.strftime('%-d %b')
+  def completed_at_for_user
+    completed_at.strftime('%-d %b')
   end
 
   def render(template)
