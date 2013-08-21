@@ -1,3 +1,4 @@
 --color
 -I app/models
--I app/services
+-I app/interactors
+-I spec/support
