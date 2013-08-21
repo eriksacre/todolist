@@ -1,8 +1,8 @@
 require 'ostruct'
 
 class DataObject < OpenStruct
-  def initialize fields
-    super fields
+  def initialize *fields
+    super *fields
   end
   
   def save!

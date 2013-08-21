@@ -1,5 +1,5 @@
 require 'active_record_spec_helper'
-require 'factories'
+require 'factories/factories'
 require 'user'
 
 describe User do
