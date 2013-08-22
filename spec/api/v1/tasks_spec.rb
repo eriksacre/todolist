@@ -10,13 +10,13 @@ describe "/api/v1/tasks", type: :api do
 
     it "should return 401 when not passing a token" do
       get url
-      response.code.should == "401"
+      expect(response.code).to eq "401"
     end
     
     it "should return 401 when passing an unknown token" do
       http_authenticate_by_token("unknown_token")
       get url, {}, @env
-      response.code.should == "401"
+      expect(response.code).to eq "401"
     end
   end
   
@@ -34,16 +34,16 @@ describe "/api/v1/tasks", type: :api do
 
       it "should return the list of tasks" do
         get url, {}, @env
-        response.code.should == "200"
+        expect(response.code).to eq "200"
 
-        json["todo"].length.should == 3
-        json["completed"].length.should == 2
-        json["todo"].any? do |t|
+        expect(json["todo"].length).to eq 3
+        expect(json["completed"].length).to eq 2
+        expect(json["todo"].any? do |t|
           t["title"] == "Task 4"
-        end.should be_true
-        json["todo"].any? do |t|
+        end).to be_true
+        expect(json["todo"].any? do |t|
           t["title"] == "Task 1"
-        end.should be_false
+        end).to be_false
       end
     end
     
@@ -53,23 +53,23 @@ describe "/api/v1/tasks", type: :api do
       it "Valid task" do
         post url, { title: "New task" }.to_json, @env
 
-        response.code.should == "201"
-        json["title"].should == "New task"
-        json["completed"].should be_false
+        expect(response.code).to eq "201"
+        expect(json["title"]).to eq "New task"
+        expect(json["completed"]).to be_false
       end
       
       it "Invalid task" do
         post url, { title: "" }.to_json, @env
         
-        response.code.should == "422"
-        json.should == [ { "error" => "Title can't be blank" } ]
+        expect(response.code).to eq "422"
+        expect(json).to eq [ { "error" => "Title can't be blank" } ]
       end
       
       it "Bad request" do
         post url, { titlex: "" }.to_json, @env
         
-        response.code.should == "400"
-        json.should == { "error" => "Request does not contain a valid combination of attributes" }
+        expect(response.code).to eq "400"
+        expect(json).to eq({ "error" => "Request does not contain a valid combination of attributes" })
       end
     end
     
@@ -79,14 +79,14 @@ describe "/api/v1/tasks", type: :api do
       
       it "Fetches the task" do
         get url, {}, @env
-        response.code.should == "200"
-        json.should == {
+        expect(response.code).to eq "200"
+        expect(json).to eq({
           "id" => task.id,
           "title" => task.title,
           "position" => 0,
           "completed" => false,
           "url" => api_v1_task_url(task)
-        }
+        })
       end
     end
     
@@ -96,14 +96,14 @@ describe "/api/v1/tasks", type: :api do
       
       it "Fetches the task" do
         get url, {}, @env
-        response.code.should == "200"
-        json.should == {
+        expect(response.code).to eq "200"
+        expect(json).to eq({
           "id" => task.id,
           "title" => task.title,
           "completed" => true,
           "completed_at" => task.updated_at.to_formatted_s(:iso8601),
           "url" => api_v1_task_url(task)
-        }
+        })
       end
     end
     
@@ -113,32 +113,32 @@ describe "/api/v1/tasks", type: :api do
       
       it "Updates the title" do
         put url, { title: "Updated" }.to_json, @env
-        response.code.should == "200"
-        json["title"].should == "Updated"
+        expect(response.code).to eq "200"
+        expect(json["title"]).to eq "Updated"
       end
       
       it "Updates the position" do
         put url, { position: 1 }.to_json, @env
-        response.code.should == "200"
-        json["position"].should == 1
+        expect(response.code).to eq "200"
+        expect(json["position"]).to eq 1
       end
       
       it "Completes the task" do
         put url, { completed: true }.to_json, @env
-        response.code.should == "200"
-        json["completed"].should == true
+        expect(response.code).to eq "200"
+        expect(json["completed"]).to eq true
       end
       
       it "Does not reopen an already open task" do
         put url, { completed: false }.to_json, @env
-        response.code.should == "400"
-        json.should == { "error" => "Task is already open" }
+        expect(response.code).to eq "400"
+        expect(json).to eq({ "error" => "Task is already open" })
       end
       
       it "Does not accept certain combination of attributes" do
         put url, { title: "Updated", position: 3 }.to_json, @env
-        response.code.should == "400"
-        json.should == { "error" => "Request does not contain a valid combination of attributes" }
+        expect(response.code).to eq "400"
+        expect(json).to eq({ "error" => "Request does not contain a valid combination of attributes" })
       end
     end
     
@@ -148,20 +148,20 @@ describe "/api/v1/tasks", type: :api do
       
       it "Does not permit updating the position" do
         put url, { position: 1 }.to_json, @env
-        response.code.should == "400"
-        json.should == { "error" => "A completed task does not have a position" }
+        expect(response.code).to eq "400"
+        expect(json).to eq({ "error" => "A completed task does not have a position" })
       end
       
       it "Does not permit completing the task" do
         put url, { completed: true }.to_json, @env
-        response.code.should == "400"
-        json.should == { "error" => "Task is already completed" }
+        expect(response.code).to eq "400"
+        expect(json).to eq({ "error" => "Task is already completed" })
       end
       
       it "Reopens the task" do
         put url, { completed: false }.to_json, @env
-        response.code.should == "200"
-        json["completed"].should == false
+        expect(response.code).to eq "200"
+        expect(json["completed"]).to be_false
       end
     end
     
@@ -171,7 +171,7 @@ describe "/api/v1/tasks", type: :api do
       
       it "Deletes the task" do
         delete url, {}, @env
-        response.code.should == "204"
+        expect(response.code).to eq "204"
         expect { Task.find(task.id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end

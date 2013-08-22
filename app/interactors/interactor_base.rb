@@ -7,7 +7,7 @@ class InteractorBase
       
       define_method("#{dependency}".to_sym) do
         value = instance_variable_get("@#{dependency}")
-        return dependency.camelize.constantize if !value
+        return dependency.to_s.camelize.constantize if !value
         value
       end
     end

@@ -7,20 +7,20 @@ describe "/api/v1/me", type: :api do
   
   it "should return 401 (Not authorized) when not passing in a basic authentication header" do
     get url
-    response.code.should == "401"
+    expect(response.code).to eq "401"
   end
   
   it "should return 401 when passing in an invalid username" do
     http_authenticate('nobody', 'secret')
     get url, {}, @env
-    response.code.should == "401"
+    expect(response.code).to eq "401"
   end
   
   it "should return a response containing the api_token for a valid username/password combination" do
     http_authenticate(user.email, user.password)
     get url, {}, @env
-    response.code.should == "200"
-    json["email"].should == user.email
-    json["api_token"].should == user.api_token
+    expect(response.code).to eq "200"
+    expect(json["email"]).to eq user.email
+    expect(json["api_token"]).to eq user.api_token
   end
 end
