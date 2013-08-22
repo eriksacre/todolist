@@ -1,11 +1,7 @@
-require 'fast_spec_helper'
+require 'ostruct'
 require 'task_interactors/create_task'
 
 describe TaskInteractors::CreateTask do
-  before :each do
-    mock_model 'Task'
-  end
-  
   # Our interactors are fast-spec-ed. This means no dependency on ActiveRecord.
   # We count on ActiveRecord for some validations. This is a problem, as we cannot
   # include all "Error"-conditions in this spec.
@@ -19,25 +15,28 @@ describe TaskInteractors::CreateTask do
   # end
   
   context "Success" do
-    subject { TaskInteractors::CreateTask.new("My task").run }
-    
     before :each do
-      service = Class.new
-      stub_const('TaskPositionService', service)
-      service.should_receive(:append)
+      @data = OpenStruct.new
+      allow(@data).to receive(:save!).and_return(@data)
+      @service = double('Class:TaskPositionService', append: nil)
+      @task = double('Class:Task', new: @data)
+      @interactor = TaskInteractors::CreateTask.new("My task")
+      @interactor.task_position_service = @service
+      @interactor.task = @task
+      @result = @interactor.run
     end
-    
+
     it "Should create task as open" do
-      subject.title.should == "My task"
-      subject.completed.should be_false
+      expect(@result.title).to eq("My task")
+      expect(@result.completed).to be_false
     end
     
     it "Should get saved" do
-      subject.has_saved.should be_true
+      expect(@data).to have_received(:save!)
     end
     
     it "Should be put at the end of the list" do
-      subject # Tested via should_receive :append
+      expect(@service).to have_received(:append)
     end
   end
   

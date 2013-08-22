@@ -1,5 +1,9 @@
+require 'interactor_base'
+
 module TaskInteractors
-  class CreateTask
+  class CreateTask < InteractorBase
+    dependencies :task, :task_position_service
+    
     def initialize(title)
       @title = title
     end
@@ -10,10 +14,10 @@ module TaskInteractors
       # TODO: make a decision on how to handle this.
       # raise ArgumentError.new("Title can't be blank") if @title.nil? || @title == ""
       
-      Task.new.tap do |task|
+      task.new.tap do |task|
         task.title = @title
         task.completed = false
-        TaskPositionService.append(task)
+        task_position_service.append(task)
         task.save!
       end
     end
