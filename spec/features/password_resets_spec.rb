@@ -7,8 +7,8 @@ feature "PasswordResets" do
     click_link "password"
     fill_in "Email", :with => user.email
     click_button "Reset Password"
-    page.should have_content("Email sent")
-    last_email.to.should include(user.email)
+    expect(page).to have_content("Email sent")
+    expect(last_email.to).to include(user.email)
   end
   
   it "does not email invalid user when requesting password reset" do
@@ -16,7 +16,7 @@ feature "PasswordResets" do
     click_link "password"
     fill_in "Email", :with => "madeupuser@example.com"
     click_button "Reset Password"
-    page.should have_content("Email sent")
-    last_email.should be_nil
+    expect(page).to have_content("Email sent")
+    expect(last_email).to be_nil
   end
 end
