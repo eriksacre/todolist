@@ -18,7 +18,7 @@ module Api
         @task = find_business_method(params[:task]) do |method, params|
           method.for(:title) { ac(:create_task, params[:title]) }
         end
-        render "show", status: :created
+        render "show", status: :created, location: api_v1_task_url(@task)
       end
       
       def update

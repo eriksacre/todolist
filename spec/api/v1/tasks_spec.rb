@@ -56,6 +56,7 @@ describe "/api/v1/tasks", type: :api do
         expect(response.code).to eq "201"
         expect(json["title"]).to eq "New task"
         expect(json["completed"]).to be_false
+        expect(response.headers['Location']).to eq(json["url"])
       end
       
       it "Invalid task" do
