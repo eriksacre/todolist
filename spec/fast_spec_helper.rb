@@ -1,5 +1,2 @@
-require 'support/active_record_mock'
-
-RSpec.configure do |config|
-  config.include ActiveRecordMock
-end
+require 'simplecov'
+SimpleCov.start 'rails'

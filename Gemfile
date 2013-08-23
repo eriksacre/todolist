@@ -47,6 +47,8 @@ group :test do
   gem 'guard-rspec'
   # gem 'cucumber-rails', require: false  # At this time cucumber-rails is not yet compatible with Rails 4!
   gem 'database_cleaner', '1.0.1'
+  gem 'simplecov', require: false
+  gem 'poltergeist'
 end
 
 # Use ActiveModel has_secure_password

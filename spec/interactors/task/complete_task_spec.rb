@@ -1,3 +1,4 @@
+require 'fast_spec_helper'
 require 'ostruct'
 require 'task_interactors/complete_task'
 
