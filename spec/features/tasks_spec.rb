@@ -30,12 +30,11 @@ feature "Tasks" do
       visit tasks_path
       click_link 'Add task'
       fill_in 'task[title]', with: ''
-      page.evaluate_script('window.lastAlertMsg = "";')
-      page.evaluate_script('window.alert = function(msg) { window.lastAlertMsg = msg; };')
-      click_button 'Create Task'
-      page.document.should have_selector("body.ajax-completed")
-      last_alert_message = page.evaluate_script('window.lastAlertMsg')
-      expect(last_alert_message).to have_content('Title')
+      catch_alert do
+        click_button 'Create Task'
+        wait_for_ajax
+      end
+      expect(@last_alert_message).to have_content('Title')
     end
     
     describe "Page with some tasks", js: true do
@@ -91,7 +90,7 @@ feature "Tasks" do
       end
       
       it "Deletes a task" do
-        page.evaluate_script('window.confirm = function() { return true; }')
+        positive_confirmation
         within("li#L#{@first.id}") do
           click_link("(remove)")
         end
@@ -101,34 +100,32 @@ feature "Tasks" do
       it "Does not complete a completed task" do
         # Some other user completes the task
         @first = TaskInteractors::CompleteTask.new(@first.id).run
-        page.evaluate_script('window.lastAlertMsg = "";')
-        page.evaluate_script('window.location.reload = function() {};')
-        page.evaluate_script('window.alert = function(msg) { window.lastAlertMsg = msg; };')
-        check("t#{@first.id}")
-        page.document.should have_selector("body.ajax-completed")
-        last_alert_message = page.evaluate_script('window.lastAlertMsg')
-        expect(last_alert_message).to have_content('already completed')
-        # page.save_screenshot('screenshot-comp.png')
+        catch_alert do
+          check("t#{@first.id}")
+          wait_for_ajax
+        end
+        expect(@last_alert_message).to have_content('already completed')
       end
       
       it "Does not crash when trying to edit a deleted task" do
         @first = TaskInteractors::DeleteTask.new(@first.id).run
-        page.evaluate_script('window.lastAlertMsg = "";')
-        page.evaluate_script('window.location.reload = function() {};')
-        page.evaluate_script('window.alert = function(msg) { window.lastAlertMsg = msg; };')
-        within("li#L#{@first.id}") do
-          click_link('Edit')
+        catch_alert do
+          within("li#L#{@first.id}") do
+            click_link('Edit')
+          end
+          wait_for_ajax
         end
-        page.document.should have_selector("body.ajax-completed")
-        last_alert_message = page.evaluate_script('window.lastAlertMsg')
-        expect(last_alert_message).to have_content('find Task')
-        # page.save_screenshot('screenshot-del.png')
+        expect(@last_alert_message).to have_content('find Task')
       end
       
-      # it "Repositions a task" do
-      #   drag_to find("li#L#{@second.id} span"), find("li#L#{@first.id}")
-      #   order = all('li').map {|each| each.text}
-      # end
+      it "Repositions a task" do
+        # As I do not have a good solution to test drag & drop, we will
+        # start from the code that is fired by the dnd event
+        page.evaluate_script('window.list.changePosition($("#L2"), 0)')
+        wait_for_ajax
+        @first.reload
+        expect(@first.position).to eq(1)
+      end
     end
   end
 end

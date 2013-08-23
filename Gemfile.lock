@@ -48,7 +48,8 @@ GEM
     diff-lcs (1.2.4)
     erubis (2.7.0)
     eventmachine (1.0.3)
-    execjs (2.0.0)
+    execjs (1.4.0)
+      multi_json (~> 1.0)
     factory_girl (4.2.0)
       activesupport (>= 3.0.0)
     factory_girl_rails (4.2.1)
@@ -216,6 +217,7 @@ DEPENDENCIES
   capybara
   coffee-rails (~> 4.0.0)
   database_cleaner (= 1.0.1)
+  execjs (= 1.4.0)
   factory_girl_rails
   guard-rspec
   jbuilder (~> 1.2)

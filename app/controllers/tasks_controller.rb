@@ -71,12 +71,12 @@ class TasksController < ApplicationController
     # Works if app has some centralized response to errors
     rescue_from ActiveRecord::RecordNotFound do |exception|
       error = exception.message
-      render  js: "alert('#{error}'); window.location.reload();"
+      render  js: "alert(\"#{error}\"); window.location.reload();"
     end
 
     # Handle business method problems. The cause is often concurrency
     rescue_from ArgumentError do |exception|
       error = exception.message
-      render js: "alert('#{error}'); window.location.reload();"
+      render js: "alert(\"#{error}\"); window.location.reload();"
     end
 end

@@ -54,8 +54,9 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
   
-  config.include AuthApiHelper, :type => :request
+  config.include AuthApiHelper, type: :request
   config.include JsonHelpers, type: :request
+  config.include JsHelpers, type: :feature
   
   config.include(MailerMacros)
   config.before(:each) { reset_email }

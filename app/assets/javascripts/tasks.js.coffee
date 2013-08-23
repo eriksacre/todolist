@@ -1,4 +1,10 @@
 $ ->
+	$(document).on 'ajaxSend', ->
+		$("body").removeClass("ajax-completed")
+		
+	$(document).on 'ajaxComplete', ->
+		$("body").addClass("ajax-completed")
+
 	$("#add-task").click (event) ->
 		$(this).hide()
 		$("#add-task-form").show()
@@ -42,11 +48,6 @@ $ ->
 		setLoader: ->
 			$(@element).next('label').addClass('loading')
 
-	$("#incomplete-tasks").bind 'sortupdate', (e, ui) ->
-		mover = ui.item.children().first('.handle')
-		data = { task: { position: ui.item.index() } }
-		ajaxUpdater.update(mover.get(0), 'POST', data)
-
 	# We wait to capture a mousedown on a move-handle before initializing the
 	# sortable feature set.
 	document.addEventListener "mousedown", (event) ->
@@ -56,6 +57,11 @@ $ ->
 		
 	# Here are methods exposed to the JS templates
 	window.list =
+		changePosition: (item, new_position) ->
+			mover = item.children().first('.handle')
+			data = { task: { position: new_position } }
+			ajaxUpdater.update(mover.get(0), 'POST', data)
+		
 		addTask: (task) ->
 			this.appendAndHighlight("#incomplete-tasks", task)
 			
@@ -103,4 +109,6 @@ $ ->
 
 	list.attachFormEventsForId("#new_task")		
 
+	$("#incomplete-tasks").bind 'sortupdate', (e, ui) ->
+		list.changePosition(ui.item, ui.item.index())
 
