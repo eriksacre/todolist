@@ -69,9 +69,9 @@ class TasksController < ApplicationController
 
     # Global catch for all controller methods
     # Works if app has some centralized response to errors
-    rescue_from ActiveRecord::RecordInvalid do |exception|
-      @errors = exception.record.errors
-      render template: "tasks/error"
+    rescue_from ActiveRecord::RecordNotFound do |exception|
+      error = exception.message
+      render  js: "alert('#{error}'); window.location.reload();"
     end
 
     # Handle business method problems. The cause is often concurrency
