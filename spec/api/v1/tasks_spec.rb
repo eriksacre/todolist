@@ -26,9 +26,9 @@ describe "/api/v1/tasks", type: :api do
     context "List of tasks" do
       let(:url) { "/api/v1/tasks" }
       before(:each) do
-        (1..5).each do |n|
+        (1..15).each do |n|
           task = TaskInteractors::CreateTask.new("Task #{n}").run
-          TaskInteractors::CompleteTask.new(task.id).run if n <= 2
+          TaskInteractors::CompleteTask.new(task.id).run if n <= 10
         end
       end
 
@@ -36,10 +36,10 @@ describe "/api/v1/tasks", type: :api do
         get url, {}, @env
         expect(response.code).to eq "200"
 
-        expect(json["todo"].length).to eq 3
-        expect(json["completed"].length).to eq 2
+        expect(json["todo"].length).to eq 5
+        expect(json["completed"].length).to eq 10
         expect(json["todo"].any? do |t|
-          t["title"] == "Task 4"
+          t["title"] == "Task 11"
         end).to be_true
         expect(json["todo"].any? do |t|
           t["title"] == "Task 1"

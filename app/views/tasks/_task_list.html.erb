@@ -12,5 +12,6 @@
 
 <h2>Completed</h2>
 <ul id="complete-tasks">
-	<%= task_list.completed.render(self) %>
+	<%= task_list.limited_completed.render(self) %>
+	<%= task_list.show_more(self) %>
 </ul>

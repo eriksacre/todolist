@@ -37,6 +37,36 @@ feature "Tasks" do
       expect(@last_alert_message).to have_content('Title')
     end
     
+    context "Completed tasks" do
+      def produce_completed_tasks(quantity)
+        1.upto(quantity) do |n|
+          task = TaskInteractors::CreateTask.new("Task #{n}").run
+          TaskInteractors::CompleteTask.new(task.id).run
+        end
+      end
+      
+      it "Does not show 'more' when there are 2 completed items" do
+        produce_completed_tasks(2)
+        visit tasks_path
+        expect(page).not_to have_content('Show more')
+      end
+      
+      it "Has a 'more' link when there are 4 completed items" do
+        produce_completed_tasks(4)
+        visit tasks_path
+        expect(page).to have_content('Show more')
+        expect(page).not_to have_content('Task 1')
+      end
+      
+      it "Shows all tasks when clicking 'more'" do
+        produce_completed_tasks(4)
+        visit tasks_path
+        click_link('Show more')
+        expect(page).to have_content('Task 1')
+        expect(page).not_to have_content('Show more')
+      end
+    end
+    
     describe "Page with some tasks", js: true do
       before :each do
         @first = TaskInteractors::CreateTask.new("First task").run

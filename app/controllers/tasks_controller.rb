@@ -5,6 +5,10 @@ class TasksController < ApplicationController
     @task_list = e TaskList.new
   end
   
+  def completed
+    @completed = e Task.completed
+  end
+  
   def create
     begin
       @task = bc :create_task, title

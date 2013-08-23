@@ -8,6 +8,9 @@ Todolist::Application.routes.draw do
   resources :password_resets, only: [:new, :create, :edit, :update]
 
   resources :tasks, only: [:index, :show, :create, :destroy, :update, :edit] do
+    collection do
+      get 'completed'
+    end
     member do
       post 'complete'
       post 'reopen'

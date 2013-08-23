@@ -44,11 +44,12 @@ body {
 	li {
 		list-style: none;
 		
-		label.loading {
-			background: url(ajax-loader.gif) left top no-repeat;
-			color: transparent;
-		}
 	}
+}
+
+.loading {
+	background: url(ajax-loader.gif) left top no-repeat;
+	color: transparent;
 }
 
 .spinner {

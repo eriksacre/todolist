@@ -16,6 +16,8 @@ $ ->
 		$("#add-task").show()
 		event.preventDefault()
 		
+	$("#show-more a").click (event) ->
+		$(this).addClass('loading')
 
 	$(document).on 'click', 'input[type=checkbox].todo', ->
 		ajaxUpdater.update(this)
