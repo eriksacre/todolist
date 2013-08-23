@@ -36,4 +36,8 @@ The sole purpose of this app is to experiment with some different techniques:
 
 * Using a concern on models to make URLs more friendly
 
+* RSpec, Capybara, Poltergeist, PhantomJS for feature specs, driving a headless browser
+
+* Business logic RSpecs without any dependency on Rails or ActiveRecord (fast-specs)
+
 Although the app (mostly) works, it is a playground to test techniques. It does not have a pretty UI and foolproof error handling.
