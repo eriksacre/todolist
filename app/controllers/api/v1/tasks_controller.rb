@@ -8,10 +8,12 @@ module Api
       
       def index
         @tasks = TaskList.new
+        fresh_when last_modified: Task.maximum(:updated_at)
       end
       
       def show
         @task = Task.find(params_id)
+        fresh_when @task
       end
       
       def create
