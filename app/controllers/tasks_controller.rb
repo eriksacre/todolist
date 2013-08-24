@@ -55,6 +55,7 @@ class TasksController < ApplicationController
   
   def reposition
     @task = bc :update_task_position, params_id, position
+    render "show"
   end
   
   def complete

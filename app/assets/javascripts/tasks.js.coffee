@@ -1,10 +1,4 @@
 $ ->
-	$(document).on 'ajaxSend', ->
-		$("body").removeClass("ajax-completed")
-		
-	$(document).on 'ajaxComplete', ->
-		$("body").addClass("ajax-completed")
-
 	$("#add-task").click (event) ->
 		$(this).hide()
 		$("#add-task-form").show()
@@ -30,8 +24,8 @@ $ ->
 
 		update: (element, method = 'POST', dataSet = {}) ->
 			@element = element
-			this.clearError()
-			this.setLoader()
+			@clearError()
+			@setLoader()
 			$.ajax
 				type: method
 				url: $(element).data('url')
@@ -48,7 +42,7 @@ $ ->
 			$("#ajax-error").html(exception)
 
 		setLoader: ->
-			$(@element).next('label').addClass('loading')
+			$(@element).nextAll('label').addClass('loading')
 
 	# We wait to capture a mousedown on a move-handle before initializing the
 	# sortable feature set.
@@ -65,10 +59,10 @@ $ ->
 			ajaxUpdater.update(mover.get(0), 'POST', data)
 		
 		addTask: (task) ->
-			this.appendAndHighlight("#incomplete-tasks", task)
+			@appendAndHighlight("#incomplete-tasks", task)
 			
 		completeTask: (task) ->
-			this.prependAndHighlight("#complete-tasks", task)
+			@prependAndHighlight("#complete-tasks", task)
 		
 		removeTask: (taskId) ->
 			$("#L#{taskId}").remove()
@@ -99,7 +93,7 @@ $ ->
 
 		attachFormEvents: (taskId) ->
 			id = "#edit_task_#{taskId}"
-			this.attachFormEventsForId(id)
+			@attachFormEventsForId(id)
 			
 		attachFormEventsForId: (id) ->
 			$(id).on "submit", ->
