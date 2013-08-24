@@ -7,6 +7,7 @@ module TaskInteractors
   
     def run
       Task.find(@task_id).tap do |task|
+        raise ArgumentError.new('Cannot modify completed task') if task.completed
         task.title = @title
         task.save!
       end

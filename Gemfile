@@ -35,7 +35,8 @@ group :doc do
 end
 
 group :development do
-  gem 'rack-mini-profiler'
+  # NOTE: using mini-profiler removes ETag
+  # gem 'rack-mini-profiler'
 end
 
 group :test, :development do

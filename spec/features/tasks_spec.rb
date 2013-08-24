@@ -148,6 +148,32 @@ feature "Tasks" do
         expect(@last_alert_message).to have_content('find Task')
       end
       
+      it "Does not crash when trying to edit a completed task" do
+        @first = TaskInteractors::CompleteTask.new(@first.id).run
+        catch_alert do
+          within("li#L#{@first.id}") do
+            click_link('Edit')
+          end
+          wait_for_ajax
+        end
+        expect(@last_alert_message).to have_content('Cannot modify completed task')
+      end
+      
+      it "Does not crash when trying to update a completed task" do
+        within("li#L#{@first.id}") do
+          click_link('Edit')
+        end
+        expect(page).to have_content('Title')
+        
+        @first = TaskInteractors::CompleteTask.new(@first.id).run
+        catch_alert do
+          fill_in 'task[title]', with: 'Modified text'
+          click_button 'Update Task'
+          wait_for_ajax
+        end
+        expect(@last_alert_message).to have_content('Cannot modify completed task')
+      end
+      
       it "Repositions a task" do
         # As I do not have a good solution to test drag & drop, we will
         # start from the code that is fired by the dnd event

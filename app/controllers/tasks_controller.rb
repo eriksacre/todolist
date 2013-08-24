@@ -28,6 +28,8 @@ class TasksController < ApplicationController
   
   def edit
     @task = e Task.find(params_id)
+    # TODO: Refactor
+    raise ArgumentError.new("Cannot modify completed task") if @task.completed
   end
   
   def update
@@ -40,6 +42,7 @@ class TasksController < ApplicationController
   end
   
   def update_task_failed(exception)
+    raise exception if !exception.is_a?(ActiveRecord::RecordInvalid) # TODO: Refactor
     @task = e exception.record
     render "edit"
   end
