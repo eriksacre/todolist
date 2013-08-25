@@ -2,7 +2,7 @@ class TasksController < ApplicationController
   interactor_namespace :task
   
   def index
-    @task_list = e TaskList.new
+    @task_list = e TaskListViewModel.new
   end
   
   def completed
@@ -10,17 +10,21 @@ class TasksController < ApplicationController
   end
   
   def create
-    begin
-      @task = bc :create_task, title
-    rescue ActiveRecord::RecordInvalid => e
-      # Why exceptions instead of checking return value?
-      # Because transactions need the exception to rollback
-      # Exception local to create
-      # Response can be very specific
-      @errors = e.record.errors
-      render template: "tasks/error"
-    end
+    bc :create_task, title
   end
+  
+  def create_task_succeeded(task)
+    @task = e task
+    render "create"
+  end
+  
+  def create_task_failed(exception)
+    raise exception if !exception.is_a?(ActiveRecord::RecordInvalid) # TODO: Refactor
+    @errors = exception.record.errors
+    render template: "tasks/error"
+  end
+  
+  private :create_task_succeeded, :create_task_failed
   
   def destroy
     @task = bc :delete_task, params_id

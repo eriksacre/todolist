@@ -1,4 +1,4 @@
-class TaskList
+class TaskListViewModel
   def todo
     @todo ||= Task.todo
   end

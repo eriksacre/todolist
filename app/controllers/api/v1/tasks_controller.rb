@@ -7,7 +7,7 @@ module Api
       interactor_namespace :task
       
       def index
-        @tasks = TaskList.new
+        @tasks = TaskListViewModel.new
         fresh_when last_modified: Task.maximum(:updated_at)
       end
       

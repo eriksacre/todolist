@@ -2,7 +2,7 @@ class TaskListExhibit < Exhibit
   exhibit_query :todo, :completed, :limited_completed, :blank_task
   
   def self.applicable_to?(object)
-    object.is_a?(TaskList)
+    object.is_a?(TaskListViewModel)
   end
   
   def show_more(context)
