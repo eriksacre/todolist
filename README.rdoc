@@ -42,4 +42,8 @@ The sole purpose of this app is to experiment with some different techniques:
 
 * ETag and Last-Modified headers for the API
 
+* Policy classes to encapsulate business conditions
+
+* Adding custom folders to rake stats
+
 Although the app (mostly) works, it is a playground to test techniques. It does not have a pretty UI and foolproof error handling.
