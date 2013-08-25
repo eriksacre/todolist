@@ -45,6 +45,19 @@ describe "/api/v1/tasks", type: :api do
           t["title"] == "Task 1"
         end).to be_false
       end
+      
+      it "returns 304 Not Modified when using If-Modified-Since header" do
+        get url, {}, @env
+        expect(response.code).to eq "200"
+        
+        last_modified = response.headers["Last-Modified"]
+        expect(last_modified).not_to be_nil
+        expect(response.headers).not_to have_key("ETag")
+
+        @env['If-Modified-Since'] = last_modified
+        get url, {}, @env
+        expect(response.code).to eq "304"
+      end
     end
     
     context "creating a task" do
@@ -88,6 +101,33 @@ describe "/api/v1/tasks", type: :api do
           "completed" => false,
           "url" => api_v1_task_url(task)
         })
+        expect(response.headers).to have_key("ETag")
+        expect(response.headers).to have_key("Last-Modified")
+      end
+      
+      it "Returns 304 Not Modified when using ETag" do
+        get url, {}, @env
+        expect(response.code).to eq "200"
+        etag = response.headers["ETag"]
+        expect(etag).not_to be_nil
+        expect(response.headers).to have_key('Last-Modified')
+        
+        @env['If-None-Match'] = etag
+        get url, {}, @env
+        expect(response.code).to eq "304"
+      end
+      
+      it "Returns modified entity when using ETag" do
+        get url, {}, @env
+        expect(response.code).to eq "200"
+        etag = response.headers["ETag"]
+        expect(etag).not_to be_nil
+        
+        TaskInteractors::CompleteTask.new(task.id).run
+        
+        @env['If-None-Match'] = etag
+        get url, {}, @env
+        expect(response.code).to eq "200"
       end
     end
     
