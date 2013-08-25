@@ -1,14 +1,19 @@
+require "interactor_base"
+require "task_policies/repositionable_task_policy"
+
 module TaskInteractors
-  class UpdateTaskPosition
+  class UpdateTaskPosition < InteractorBase
+    dependencies :task, :task_position_service
+    
     def initialize(id, new_position)
       @id = id
       @new_position = new_position
     end
   
     def run
-      Task.find(@id).tap do |task|
-        raise ArgumentError.new("A completed task does not have a position") if task.completed
-        TaskPositionService.move(task, @new_position)
+      task.find(@id).tap do |task|
+        TaskPolicies::RepositionableTaskPolicy.new(task).enforce
+        task_position_service.move(task, @new_position)
         task.save!
       end
     end

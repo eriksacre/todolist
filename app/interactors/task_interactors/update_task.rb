@@ -1,13 +1,18 @@
+require 'interactor_base'
+require "task_policies/modifyable_task_policy"
+
 module TaskInteractors
-  class UpdateTask
+  class UpdateTask < InteractorBase
+    dependencies :task
+    
     def initialize(task_id, title)
       @task_id = task_id
       @title = title
     end
   
     def run
-      Task.find(@task_id).tap do |task|
-        raise ArgumentError.new('Cannot modify completed task') if task.completed
+      task.find(@task_id).tap do |task|
+        TaskPolicies::ModifyableTaskPolicy.new(task).enforce
         task.title = @title
         task.save!
       end

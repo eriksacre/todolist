@@ -1,4 +1,5 @@
 require 'interactor_base'
+require "task_policies/completable_task_policy"
 
 module TaskInteractors
   class CompleteTask < InteractorBase
@@ -10,7 +11,7 @@ module TaskInteractors
   
     def run
       task.find(@task_id).tap do |task|
-        raise ArgumentError.new("Task is already completed") if task.completed
+        TaskPolicies::CompletableTaskPolicy.new(task).enforce
         task_position_service.remove(task)
         task.completed = true
         task.completed_at = time.zone.now

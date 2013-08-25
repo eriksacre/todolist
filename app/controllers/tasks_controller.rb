@@ -32,8 +32,7 @@ class TasksController < ApplicationController
   
   def edit
     @task = e Task.find(params_id)
-    # TODO: Refactor
-    raise ArgumentError.new("Cannot modify completed task") if @task.completed
+    TaskPolicies::ModifyableTaskPolicy.new(@task).enforce
   end
   
   def update

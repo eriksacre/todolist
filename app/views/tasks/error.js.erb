@@ -1,3 +1,4 @@
 <% @errors.full_messages.each do |msg| %>
-	alert("<%= msg %>");
+	alert("<%= raw msg %>");
 <% end %>
+location.reload();
