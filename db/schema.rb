@@ -11,7 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130821115919) do
+ActiveRecord::Schema.define(version: 20130826213246) do
+
+  create_table "activities", force: true do |t|
+    t.integer  "user_id"
+    t.string   "action"
+    t.datetime "recorded_at"
+    t.text     "info"
+  end
 
   create_table "tasks", force: true do |t|
     t.string   "title"
