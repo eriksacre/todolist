@@ -1,6 +1,8 @@
 require "spec_helper"
 
 describe ActivityService do
+  
+  let(:user) { FactoryGirl.create(:user) }
 
   context "Building an Activity" do
     it "has attributes for user, activity and recorded_at" do
@@ -48,7 +50,7 @@ describe ActivityService do
     end
   
     it "has a method to get attributes for related object" do
-      task = TaskInteractors::CreateTask.new("Some task").run
+      task = TaskInteractors::CreateTask.new(user, "Some task").run
       service = ActivityService.new.tap do |a|
         a.add_related task
       end
@@ -61,18 +63,24 @@ describe ActivityService do
   end
 
   context "Storing the activity in the database" do
+    # TODO: make storing the activity a decorator so the base class is abstracted from persistence
+    def create_task title
+      task = TaskInteractors::CreateTask.new(user, title)
+      task.new_activity_service = ActivityService.new
+      task.run
+    end
+    
     before :each do
-      @user = FactoryGirl.create(:user)
-      @task = TaskInteractors::CreateTask.new("Some task").run
-      @task2 = TaskInteractors::CreateTask.new("Master task").run
-      @activity = ActivityService.new.tap do |a|
-        a.user = @user.id
+      @task = create_task("Some task")
+      @task2 = create_task("Master task")
+      @activity = DatabaseActivityService.new(ActivityService.new).tap do |a|
+        a.user = user.id
         a.action = "task_interactors/create_task"
         a.recorded_at = @task.updated_at
         a.add_parameter :title, @task.title
         a.add_related @task
         a.add_related @task2 # Not representative, but just to have a second related object
-        a.save!
+        a.log!
       end
     end
     
@@ -80,7 +88,7 @@ describe ActivityService do
       expect(Activity.all.length).to eq(1)
       
       activity = Activity.limit(1)[0]
-      expect(activity.user_id).to eq(@user.id)
+      expect(activity.user_id).to eq(user.id)
       expect(activity.action).to eq("task_interactors/create_task")
       expect(activity.recorded_at).to eq(@task.updated_at)
       expect(JSON.parse(activity.info)).to eq({

@@ -1,16 +1,19 @@
 require 'fast_spec_helper'
 require 'ostruct'
 require 'task_interactors/complete_task'
+require 'activity_service'
 
 describe TaskInteractors::CompleteTask do
   before :each do
+    user = OpenStruct.new id: 1
     @service = double('Class:TaskPositionService', remove: nil)
     @data = OpenStruct.new id: 1, title: 'Test', completed: false, position: 3
     allow(@data).to receive(:save!).and_return(@data)
     @task = double('Class:Task', find: @data)
-    @interactor = TaskInteractors::CompleteTask.new(@data.id)
+    @interactor = TaskInteractors::CompleteTask.new(user, @data.id)
     @interactor.task = @task
     @interactor.task_position_service = @service
+    @interactor.new_activity_service = ActivityService.new
   end
   
   context "Error" do

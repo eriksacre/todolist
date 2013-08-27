@@ -1,14 +1,17 @@
 require 'fast_spec_helper'
 require 'ostruct'
 require 'task_interactors/update_task'
+require 'activity_service'
 
 describe TaskInteractors::UpdateTask do
   before :each do
+    user = OpenStruct.new id: 1
     @data = OpenStruct.new id: 1, title: 'Test'
     allow(@data).to receive(:save!).and_return(@data)
     @task = double('Class:Task', find: @data)
-    @interactor = TaskInteractors::UpdateTask.new(@data.id, "Brand new title")
+    @interactor = TaskInteractors::UpdateTask.new(user, @data.id, "Brand new title")
     @interactor.task = @task
+    @interactor.new_activity_service = ActivityService.new
   end
   
   context "Error" do

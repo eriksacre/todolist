@@ -5,11 +5,13 @@ describe Task do
   COMPLETE_COUNT = 15
   REMAINING_COUNT = TASK_COUNT - COMPLETE_COUNT
   
+  let(:user) { OpenStruct.new id: 1 }
+  
   context "More than limited number of tasks" do
     before :each do
       (1..TASK_COUNT).each do |n|
-        task = TaskInteractors::CreateTask.new("Task #{n}").run
-        TaskInteractors::CompleteTask.new(task.id).run if n <= COMPLETE_COUNT
+        task = TaskInteractors::CreateTask.new(user, "Task #{n}").run
+        TaskInteractors::CompleteTask.new(user, task.id).run if n <= COMPLETE_COUNT
       end
     end
   
@@ -48,8 +50,8 @@ describe Task do
   
   context "Fewer than limited number of tasks" do
     before :each do
-      task = TaskInteractors::CreateTask.new("Sole task").run
-      TaskInteractors::CompleteTask.new(task.id).run
+      task = TaskInteractors::CreateTask.new(user, "Sole task").run
+      TaskInteractors::CompleteTask.new(user, task.id).run
     end
     
     it "Indicates there aren't more tasks" do

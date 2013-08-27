@@ -1,12 +1,12 @@
 module BusinessServiceCallHelper
   def business_service_call(service_class, *params)
-    object = service_object service_class, *params
+    object = service_object service_class, current_user, *params
     exhibit(result_teller(transactional(object), self).run)
   end
   alias :bc :business_service_call
   
   def api_service_call(service_class, *params)
-    object = service_object service_class, *params
+    object = service_object service_class, current_user, *params
     transactional(object).run
   end
   alias :ac :api_service_call

@@ -40,8 +40,8 @@ feature "Tasks" do
     context "Completed tasks" do
       def produce_completed_tasks(quantity)
         1.upto(quantity) do |n|
-          task = TaskInteractors::CreateTask.new("Task #{n}").run
-          TaskInteractors::CompleteTask.new(task.id).run
+          task = TaskInteractors::CreateTask.new(@user, "Task #{n}").run
+          TaskInteractors::CompleteTask.new(@user, task.id).run
         end
       end
       
@@ -69,10 +69,10 @@ feature "Tasks" do
     
     describe "Page with some tasks", js: true do
       before :each do
-        @first = TaskInteractors::CreateTask.new("First task").run
-        @second = TaskInteractors::CreateTask.new("Second task").run
-        @third = TaskInteractors::CreateTask.new("Third task").run
-        TaskInteractors::CompleteTask.new(@third.id).run
+        @first = TaskInteractors::CreateTask.new(@user, "First task").run
+        @second = TaskInteractors::CreateTask.new(@user, "Second task").run
+        @third = TaskInteractors::CreateTask.new(@user, "Third task").run
+        TaskInteractors::CompleteTask.new(@user, @third.id).run
         visit tasks_path
       end
       
@@ -129,7 +129,7 @@ feature "Tasks" do
       
       it "Does not complete a completed task" do
         # Some other user completes the task
-        @first = TaskInteractors::CompleteTask.new(@first.id).run
+        @first = TaskInteractors::CompleteTask.new(@user, @first.id).run
         catch_alert do
           check("t#{@first.id}")
           wait_for_ajax
@@ -138,7 +138,7 @@ feature "Tasks" do
       end
       
       it "Does not crash when trying to edit a deleted task" do
-        @first = TaskInteractors::DeleteTask.new(@first.id).run
+        @first = TaskInteractors::DeleteTask.new(@user, @first.id).run
         catch_alert do
           within("li#L#{@first.id}") do
             click_link('Edit')
@@ -149,7 +149,7 @@ feature "Tasks" do
       end
       
       it "Does not crash when trying to edit a completed task" do
-        @first = TaskInteractors::CompleteTask.new(@first.id).run
+        @first = TaskInteractors::CompleteTask.new(@user, @first.id).run
         catch_alert do
           within("li#L#{@first.id}") do
             click_link('Edit')
@@ -165,7 +165,7 @@ feature "Tasks" do
         end
         expect(page).to have_content('Title')
         
-        @first = TaskInteractors::CompleteTask.new(@first.id).run
+        @first = TaskInteractors::CompleteTask.new(@user, @first.id).run
         catch_alert do
           fill_in 'task[title]', with: 'Modified text'
           click_button 'Update Task'

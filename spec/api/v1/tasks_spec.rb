@@ -27,8 +27,8 @@ describe "/api/v1/tasks", type: :api do
       let(:url) { "/api/v1/tasks" }
       before(:each) do
         (1..15).each do |n|
-          task = TaskInteractors::CreateTask.new("Task #{n}").run
-          TaskInteractors::CompleteTask.new(task.id).run if n <= 10
+          task = TaskInteractors::CreateTask.new(user, "Task #{n}").run
+          TaskInteractors::CompleteTask.new(user, task.id).run if n <= 10
         end
       end
 
@@ -88,7 +88,7 @@ describe "/api/v1/tasks", type: :api do
     end
     
     context "fetching a single open task" do
-      let(:task) { TaskInteractors::CreateTask.new("Test").run }
+      let(:task) { TaskInteractors::CreateTask.new(user, "Test").run }
       let(:url) { "/api/v1/tasks/#{task.id}-test"}
       
       it "Fetches the task" do
@@ -123,7 +123,7 @@ describe "/api/v1/tasks", type: :api do
         etag = response.headers["ETag"]
         expect(etag).not_to be_nil
         
-        TaskInteractors::CompleteTask.new(task.id).run
+        TaskInteractors::CompleteTask.new(user, task.id).run
         
         @env['If-None-Match'] = etag
         get url, {}, @env
@@ -132,7 +132,7 @@ describe "/api/v1/tasks", type: :api do
     end
     
     context "fetching a single completed task" do
-      let(:task) { t = TaskInteractors::CreateTask.new("Test").run; TaskInteractors::CompleteTask.new(t.id).run }
+      let(:task) { t = TaskInteractors::CreateTask.new(user, "Test").run; TaskInteractors::CompleteTask.new(user, t.id).run }
       let(:url) { "/api/v1/tasks/#{task.id}-test"}
       
       it "Fetches the task" do
@@ -149,7 +149,7 @@ describe "/api/v1/tasks", type: :api do
     end
     
     context "modifying an open task" do
-      let(:task) { TaskInteractors::CreateTask.new("Test").run }
+      let(:task) { TaskInteractors::CreateTask.new(user, "Test").run }
       let(:url) { "/api/v1/tasks/#{task.id}" }
       
       it "Updates the title" do
@@ -184,7 +184,7 @@ describe "/api/v1/tasks", type: :api do
     end
     
     context "modifying a completed task" do
-      let(:task) { t = TaskInteractors::CreateTask.new("Test").run; TaskInteractors::CompleteTask.new(t.id).run }
+      let(:task) { t = TaskInteractors::CreateTask.new(user, "Test").run; TaskInteractors::CompleteTask.new(user, t.id).run }
       let(:url) { "/api/v1/tasks/#{task.id}" }
       
       it "Does not permit updating the position" do
@@ -207,7 +207,7 @@ describe "/api/v1/tasks", type: :api do
     end
     
     context "deleting a task" do
-      let(:task) { TaskInteractors::CreateTask.new("Test").run }
+      let(:task) { TaskInteractors::CreateTask.new(user, "Test").run }
       let(:url) { "/api/v1/tasks/#{task.id}" }
       
       it "Deletes the task" do

@@ -4,11 +4,12 @@ module TaskInteractors
   class CreateTask < InteractorBase
     dependencies :task, :task_position_service
     
-    def initialize(title)
+    def initialize(current_user, title)
+      super(current_user)
       @title = title
     end
   
-    def run
+    def perform
       # ActiveRecord will catch this error.
       # However, putting it here makes it an explicit part of this interactor.
       # TODO: make a decision on how to handle this.
@@ -20,6 +21,11 @@ module TaskInteractors
         task_position_service.append(task)
         task.save!
       end
+    end
+    
+    def log_specifics activity, task
+      # Only needs to add interceptor-specific params and related objects
+      activity.add_parameter :title, @title
     end
   end
 end
