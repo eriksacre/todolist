@@ -54,7 +54,7 @@ describe ActivityService do
       end
     
       expect(service.related_objects.length).to eq(1)
-      expect(service.related_objects[0][:type]).to eq("task")
+      expect(service.related_objects[0][:type]).to eq("Task")
       expect(service.related_objects[0][:id]).to eq(task.id)
       expect(service.related_objects[0][:title]).to eq(task.title)
     end
@@ -64,12 +64,14 @@ describe ActivityService do
     before :each do
       @user = FactoryGirl.create(:user)
       @task = TaskInteractors::CreateTask.new("Some task").run
+      @task2 = TaskInteractors::CreateTask.new("Master task").run
       @activity = ActivityService.new.tap do |a|
         a.user = @user.id
         a.action = "task_interactors/create_task"
         a.recorded_at = @task.updated_at
         a.add_parameter :title, @task.title
         a.add_related @task
+        a.add_related @task2 # Not representative, but just to have a second related object
         a.save!
       end
     end
@@ -87,12 +89,25 @@ describe ActivityService do
         },
         "related_objects" => [
           {
-            "type" => "task",
+            "type" => @task.class.name,
             "id" => @task.id,
             "title" => @task.title
+          },
+          {
+            "type" => @task2.class.name,
+            "id" => @task2.id,
+            "title" => @task2.title
           }
         ]
       })
+    end
+    
+    it "Stores a record for each related object in activity_relations table" do
+      expect(ActivityRelation.all.length).to eq(2)
+      
+      activity = Activity.limit(1)[0]
+      expect { ActivityRelation.find_by!(activity_id: activity.id) }.not_to raise_error
+      expect { ActivityRelation.find_by!(related_id: @task.id, related_type: @task.class.name) }.not_to raise_error
     end
   end
 end

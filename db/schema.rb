@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130826213246) do
+ActiveRecord::Schema.define(version: 20130827145733) do
 
   create_table "activities", force: true do |t|
     t.integer  "user_id"
@@ -19,6 +19,16 @@ ActiveRecord::Schema.define(version: 20130826213246) do
     t.datetime "recorded_at"
     t.text     "info"
   end
+
+  create_table "activity_relations", force: true do |t|
+    t.integer  "activity_id"
+    t.string   "action"
+    t.datetime "recorded_at"
+    t.integer  "related_id"
+    t.string   "related_type"
+  end
+
+  add_index "activity_relations", ["related_id", "related_type", "recorded_at"], name: "activity_relations_related"
 
   create_table "tasks", force: true do |t|
     t.string   "title"

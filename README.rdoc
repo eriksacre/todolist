@@ -48,4 +48,6 @@ The sole purpose of this app is to experiment with some different techniques:
 
 * Using Guard to automatically run RSpec when needed
 
+* Activity feed
+
 Although the app (mostly) works, it is a playground to test techniques. It does not have a pretty UI and foolproof error handling.
