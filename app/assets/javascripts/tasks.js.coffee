@@ -105,6 +105,6 @@ $ ->
 
 	list.attachFormEventsForId("#new_task")		
 
-	$("#incomplete-tasks").bind 'sortupdate', (e, ui) ->
+	$(document).on 'sortupdate', "#incomplete-tasks", (e, ui) ->
 		list.changePosition(ui.item, ui.item.index())
 
