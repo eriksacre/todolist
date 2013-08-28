@@ -3,21 +3,16 @@ require 'spec_helper'
 feature "Tasks" do
   describe "Blank tasks page", js: true do
     before :each do
-      @user = FactoryGirl.create(:user)
-      visit login_path
-      fill_in 'email', with: @user.email
-      fill_in 'password', with: 'secret'
-      click_button 'Log In'
-      expect(page).to have_content("Logged in")
+      login
     end
     
-    it "Shows 'to do' and 'completed'" do
+    scenario "Shows 'to do' and 'completed'" do
       visit tasks_path
       expect(page).to have_content("To do")
       expect(page).to have_content("Completed")
     end
     
-    it "Creates a new task" do
+    scenario "Creates a new task" do
       visit tasks_path
       click_link 'Add task'
       fill_in 'task[title]', with: 'My first task'
@@ -26,7 +21,7 @@ feature "Tasks" do
       expect(page).to have_content("My first task")
     end
     
-    it "Does not create a task with invalid title" do
+    scenario "Does not create a task with invalid title" do
       visit tasks_path
       click_link 'Add task'
       fill_in 'task[title]', with: ''
@@ -45,20 +40,20 @@ feature "Tasks" do
         end
       end
       
-      it "Does not show 'more' when there are 2 completed items" do
+      scenario "Does not show 'more' when there are 2 completed items" do
         produce_completed_tasks(2)
         visit tasks_path
         expect(page).not_to have_content('Show more')
       end
       
-      it "Has a 'more' link when there are 4 completed items" do
+      scenario "Has a 'more' link when there are 4 completed items" do
         produce_completed_tasks(4)
         visit tasks_path
         expect(page).to have_content('Show more')
         expect(page).not_to have_content('Task 1')
       end
       
-      it "Shows all tasks when clicking 'more'" do
+      scenario "Shows all tasks when clicking 'more'" do
         produce_completed_tasks(4)
         visit tasks_path
         click_link('Show more')
@@ -76,7 +71,7 @@ feature "Tasks" do
         visit tasks_path
       end
       
-      it "Edits a task" do
+      scenario "Edits a task" do
         within("li#L#{@first.id}") do
           click_link('Edit')
           expect(page).to have_content('Title')
@@ -87,7 +82,7 @@ feature "Tasks" do
         end
       end
       
-      it "Cancels the edit of a task" do
+      scenario "Cancels the edit of a task" do
         within("li#L#{@first.id}") do
           click_link('Edit')
           expect(page).to have_content('Cancel')
@@ -97,7 +92,7 @@ feature "Tasks" do
         end
       end
       
-      it "Edits a task with an invalid value" do
+      scenario "Edits a task with an invalid value" do
         within("li#L#{@first.id}") do
           click_link('Edit')
           expect(page).to have_content('Title')
@@ -107,19 +102,19 @@ feature "Tasks" do
         end
       end
       
-      it "Completes a task" do
+      scenario "Completes a task" do
         check("t#{@first.id}")
         expect(page).to have_css("ul#complete-tasks li#L#{@first.id}")
         expect(page).not_to have_css("ul#incomplete-tasks li#L#{@third.id}")
       end
       
-      it "Reopens a task" do
+      scenario "Reopens a task" do
         uncheck("t#{@third.id}")
         expect(page).not_to have_css("ul#complete-tasks li#L#{@first.id}")
         expect(page).to have_css("ul#incomplete-tasks li#L#{@third.id}")
       end
       
-      it "Deletes a task" do
+      scenario "Deletes a task" do
         positive_confirmation
         within("li#L#{@first.id}") do
           click_link("(remove)")
@@ -127,7 +122,7 @@ feature "Tasks" do
         expect(page).not_to have_content("First task")
       end
       
-      it "Does not complete a completed task" do
+      scenario "Does not complete a completed task" do
         # Some other user completes the task
         @first = TaskInteractors::CompleteTask.new(@user, @first.id).run
         catch_alert do
@@ -137,7 +132,7 @@ feature "Tasks" do
         expect(@last_alert_message).to have_content('already completed')
       end
       
-      it "Does not crash when trying to edit a deleted task" do
+      scenario "Does not crash when trying to edit a deleted task" do
         @first = TaskInteractors::DeleteTask.new(@user, @first.id).run
         catch_alert do
           within("li#L#{@first.id}") do
@@ -148,7 +143,7 @@ feature "Tasks" do
         expect(@last_alert_message).to have_content('find Task')
       end
       
-      it "Does not crash when trying to edit a completed task" do
+      scenario "Does not crash when trying to edit a completed task" do
         @first = TaskInteractors::CompleteTask.new(@user, @first.id).run
         catch_alert do
           within("li#L#{@first.id}") do
@@ -159,7 +154,7 @@ feature "Tasks" do
         expect(@last_alert_message).to have_content('Cannot modify completed task')
       end
       
-      it "Does not crash when trying to update a completed task" do
+      scenario "Does not crash when trying to update a completed task" do
         within("li#L#{@first.id}") do
           click_link('Edit')
         end
@@ -174,7 +169,7 @@ feature "Tasks" do
         expect(@last_alert_message).to have_content('Cannot modify completed task')
       end
       
-      it "Repositions a task" do
+      scenario "Repositions a task" do
         # As I do not have a good solution to test drag & drop, we will
         # start from the code that is fired by the dnd event
         page.evaluate_script('window.list.changePosition($("#L2"), 0)')

@@ -57,6 +57,7 @@ RSpec.configure do |config|
   config.include AuthApiHelper, type: :request
   config.include JsonHelpers, type: :request
   config.include JsHelpers, type: :feature
+  config.include FeatureHelpers, type: :feature
   
   config.include(MailerMacros)
   config.before(:each) { reset_email }

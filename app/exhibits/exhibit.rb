@@ -12,6 +12,8 @@ class Exhibit < SimpleDelegator
       IncompleteTaskExhibit,
       CompleteTaskExhibit,
       TaskListExhibit,
+      ActivitiesExhibit,
+      ActivityExhibit,
       EnumerableExhibit
     ]
   end
