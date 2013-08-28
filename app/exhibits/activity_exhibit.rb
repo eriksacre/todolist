@@ -3,8 +3,11 @@ class ActivityExhibit < Exhibit
     object.is_a?(Activity)
   end
   
+  def activity_info
+    @activity_info ||= JSON.parse(info)
+  end
+  
   def title
-    activity_info = JSON.parse(info)
     activity_info["related_objects"][0]["title"]
   end
   
@@ -21,6 +24,17 @@ class ActivityExhibit < Exhibit
     # TODO: Refactor so text is not hard-coded for all possible interactors over here
     # But implementing a partial per interactor is a bit much as well. Find a pragmatic solution
     ACTION_TEXT[action]
+  end
+  
+  API_PATH = {
+    "Task" => ->(id, ctx) { ctx.api_v1_task_url(id) }
+  }
+  
+  def api_url
+    id = @activity_info["related_objects"][0]["id"]
+    type = @activity_info["related_objects"][0]["type"]
+    
+    API_PATH[type].call(id, @context)
   end
   
   def render(template)
