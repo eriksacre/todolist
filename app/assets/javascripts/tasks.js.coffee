@@ -1,16 +1,16 @@
 $ ->
-	$("#add-task").click (event) ->
+	$(document).on 'click', '#add-task', (event) ->
 		$(this).hide()
 		$("#add-task-form").show()
 		$("#task_title").focus()
 		event.preventDefault()
 		
-	$("#cancel-task-form").click (event) ->
+	$(document).on 'click', "#cancel-task-form", (event) ->
 		$("#add-task-form").hide()
 		$("#add-task").show()
 		event.preventDefault()
 		
-	$("#show-more a").click (event) ->
+	$(document).on 'click', "#show-more a", (event) ->
 		$(this).addClass('loading')
 
 	$(document).on 'click', 'input[type=checkbox].todo', ->
