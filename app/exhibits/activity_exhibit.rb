@@ -16,7 +16,7 @@ class ActivityExhibit < Exhibit
     "TaskInteractors::UpdateTask" => "updated",
     "TaskInteractors::CompleteTask" => "completed",
     "TaskInteractors::ReopenTask" => "reopened",
-    "TaskInteractors::UpdateTaskPosition" => "position updated",
+    "TaskInteractors::UpdateTaskPosition" => "repositioned",
     "TaskInteractors::DeleteTask" => "deleted"
   }
   
@@ -26,6 +26,8 @@ class ActivityExhibit < Exhibit
     ACTION_TEXT[action]
   end
   
+  # TODO: Make this dynamic, instead of hardcoding all possible resource types in here
+  # TODO: Find a solution that can also generate readable URLs (without loading the AR model)
   API_PATH = {
     "Task" => ->(id, ctx) { ctx.api_v1_task_url(id) }
   }

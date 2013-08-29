@@ -10,39 +10,19 @@ $ ->
 		$("#add-task").show()
 		event.preventDefault()
 		
-	$(document).on 'click', "#show-more a", (event) ->
-		$(this).addClass('loading')
-
-	$(document).on 'click', 'input[type=checkbox].todo', ->
-		ajaxUpdater.update(this)
-
 	$(document).ajaxError (event, jqxhr, settings, exception) ->
-		ajaxUpdater.setError(exception)
+		$("#ajax-error").html(exception)
 
 	ajaxUpdater = 
-		element: null
-
 		update: (element, method = 'POST', dataSet = {}) ->
-			@element = element
-			@clearError()
-			@setLoader()
+			$("#ajax-error").html("")
+			$(element).nextAll('label').addClass('loading')
 			$.ajax
 				type: method
 				url: $(element).data('url')
 				data: JSON.stringify(dataSet)
 				contentType: 'application/json'
 				dataType: 'script'
-				complete: ->
-					$(@element).next('label').removeClass('loading')
-
-		clearError: ->
-			$("#ajax-error").html("")
-
-		setError: (exception) ->
-			$("#ajax-error").html(exception)
-
-		setLoader: ->
-			$(@element).nextAll('label').addClass('loading')
 
 	# We wait to capture a mousedown on a move-handle before initializing the
 	# sortable feature set.
@@ -78,7 +58,6 @@ $ ->
 			
 		prepareFormForNextEntry: ->
 			$("#task_title").val('').focus()
-			$("#add-task-form form input[type=submit]").removeAttr("disabled")
 			
 		highlightTask: (taskId) ->
 			$("#L#{taskId}").highlight()
@@ -91,20 +70,19 @@ $ ->
 			$(id).prepend(task)
 			$(id).children('li').first().highlight()
 
-		attachFormEvents: (taskId) ->
-			id = "#edit_task_#{taskId}"
-			@attachFormEventsForId(id)
-			
-		attachFormEventsForId: (id) ->
-			$(id).on "submit", ->
-				$("#{id} input[type=submit]").attr("disabled", "disabled")
-			$(id).on "ajax:before", ->
-				$("#{id} .spinner").addClass("spinning")
-			$(id).on "ajax:complete", ->
-				$("#{id} .spinner").removeClass("spinning")
-
-	list.attachFormEventsForId("#new_task")		
-
 	$(document).on 'sortupdate', "#incomplete-tasks", (e, ui) ->
 		list.changePosition(ui.item, ui.item.index())
+
+	# All of the following event code exists solely to show a progress spinner
+	$(document).on "ajax:before", "form", ->
+		$(this).children('.spinner').addClass("spinning")
+		
+	$(document).on "ajax:complete", "form", ->
+		$(this).children('.spinner').removeClass("spinning")
+
+	$(document).on "ajax:before", "input[type='checkbox']", ->
+		$(this).nextAll('label').addClass('loading')
+
+	$(document).on 'click', "#show-more a", (event) ->
+		$(this).addClass('loading')
 

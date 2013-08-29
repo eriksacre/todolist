@@ -10,6 +10,6 @@ class TaskExhibit < Exhibit
   end
   
   def checkbox_for_task(template, path)
-  	template.check_box_tag task_id(self), "1", self.completed, data: { url: path }, class: 'todo'
+  	template.check_box_tag task_id(self), "1", self.completed, data: { url: path, method: 'POST', remote: true }, class: 'todo'
   end
 end

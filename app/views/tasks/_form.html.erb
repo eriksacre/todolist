@@ -6,6 +6,6 @@
 	<%= f.text_field :title %>
 	<div class="spinner"></div>
 	<br>
-	<%= f.submit %>
+	<%= f.submit data: { disable_with: 'Saving...' } %>
 	<%= task.cancel(self) %>
 <% end %>
