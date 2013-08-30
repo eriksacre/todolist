@@ -1,13 +1,13 @@
 class ActivitiesViewModel
-  def initialize(object = null)
-    @object = object
+  def initialize(subject = null)
+    @subject = subject
   end
   
   def activities
-    @activities ||= @object.nil? ? Activity.everything : Activity.find_for(@object)
+    @activities ||= subject.nil? ? Activity.everything : Activity.find_for(subject)
   end
   
-  def object
-    @object
+  def subject
+    @subject
   end
 end

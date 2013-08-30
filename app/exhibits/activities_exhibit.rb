@@ -6,7 +6,7 @@ class ActivitiesExhibit < Exhibit
   end
 
   def title
-    object.nil? ? "All activities" : "#{object.class.name}: #{object.title}"
+    subject.nil? ? "All activities" : "#{subject.class.name}: #{subject.title}"
   end
   
   def render(template)

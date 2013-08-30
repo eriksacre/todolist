@@ -31,7 +31,7 @@ describe Task do
   
     context "Completed tasks" do
       it "Returns limited number of completed tasks" do
-        expect(Task.limited_completed.length).to eq(Task::MAX_COMPLETED)
+        expect(Task.limited_completed(3).length).to eq(3)
       end
     
       it "Returns the number of completed tasks" do
@@ -41,21 +41,6 @@ describe Task do
       it "Returns all completed tasks" do
         expect(Task.completed.length).to eq(COMPLETE_COUNT)
       end
-    
-      it "Indicates there are more completed tasks than returned by default" do
-        expect(Task.more?).to be_true
-      end
-    end
-  end
-  
-  context "Fewer than limited number of tasks" do
-    before :each do
-      task = TaskInteractors::CreateTask.new(user, "Sole task").run
-      TaskInteractors::CompleteTask.new(user, task.id).run
-    end
-    
-    it "Indicates there aren't more tasks" do
-      expect(Task.more?).to be_false
     end
   end
 end

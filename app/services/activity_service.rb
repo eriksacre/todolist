@@ -5,17 +5,15 @@ class ActivityService
     raise ArgumentError.new("add_parameter must have 1 or 2 values") if !(1..2).include? value.length
     return parameters[key] = value[0] if value.length == 1
     
-    parameters[key] = {}
-    parameters[key][:old_value] = value[0]
-    parameters[key][:new_value] = value[1]
+    parameters[key] = { old_value: value[0], new_value: value[1] }
   end
   
   def add_related object
-    object_description = {}
-    object_description[:type] = object.class.name
-    object_description[:id] = object.id
-    object_description[:title] = opinionated_title(object)
-    related_objects << object_description
+    related_objects << {
+      type: object.class.name,
+      id: object.id,
+      title: opinionated_title(object)
+    }
   end
   
   def parameters

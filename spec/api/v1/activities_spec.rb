@@ -38,7 +38,7 @@ describe "/api/v1/activities", type: :api do
         "user" => { "id" => user.id, "email" => user.email },
         "recorded_at" => @t1.updated_at.to_formatted_s(:iso8601),
         "action" => "created",
-        "subject" => { "title" => @t1.title, "url" => api_v1_task_url(@t1.id) } # Problem: not easy to get slug for related objects!
+        "subject" => { "title" => @t1.title, "url" => api_v1_task_url(@t1) }
       )
     end
     

@@ -36,7 +36,7 @@ class ActivityExhibit < Exhibit
     id = @activity_info["related_objects"][0]["id"]
     type = @activity_info["related_objects"][0]["type"]
     
-    API_PATH[type].call(id, @context)
+    API_PATH[type].call(id, @context) + title.slug
   end
   
   def render(template)

@@ -1,10 +1,4 @@
-# Encapsulates the required logic and DB operations to maintain the right position-values
-# Used in apps where the user can manually change the order of items
-# Questions:
-#  - Is this an example that would be better implemented as an ActiveRecord concern?
-#  - The class encapsulates the entire logic, but part of its private methods are DB ops. Do they belong here?
-# Remarks:
-#  - The current implementation does not support a scope, so the position of global to the table
+# The current implementation does not support a scope, so the position is global to the table
 
 class TaskPositionService
   class << self
