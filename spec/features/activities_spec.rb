@@ -24,17 +24,29 @@ feature "Activities" do
   end
   
   scenario "Page having some activities" do
-    t1 = TaskInteractors::CreateTask.new(@user, "First task").run
-    t2 = TaskInteractors::CreateTask.new(@user, "Second task").run
-    t3 = TaskInteractors::CreateTask.new(@user, "Third task").run
-    TaskInteractors::UpdateTask.new(@user, t1.id, "First ammended task").run
-    TaskInteractors::CompleteTask.new(@user, t2.id).run
-    TaskInteractors::UpdateTaskPosition.new(@user, t1.id, 1).run
-    TaskInteractors::ReopenTask.new(@user, t2.id).run
-    TaskInteractors::DeleteTask.new(@user, t3.id).run
+    some_activities
     
     visit activities_path
     expect(page).to have_content('First task')
     expect(page).to have_content('First ammended task')
+  end
+  
+  scenario "Page requested for a single task" do
+    some_activities
+    
+    visit task_activities_path(@t1)
+    expect(page).to have_content("Activity feed")
+    expect(page).to have_content("Task: First ammended task")
+  end
+  
+  def some_activities
+    @t1 = TaskInteractors::CreateTask.new(@user, "First task").run
+    @t2 = TaskInteractors::CreateTask.new(@user, "Second task").run
+    @t3 = TaskInteractors::CreateTask.new(@user, "Third task").run
+    TaskInteractors::UpdateTask.new(@user, @t1.id, "First ammended task").run
+    TaskInteractors::CompleteTask.new(@user, @t2.id).run
+    TaskInteractors::UpdateTaskPosition.new(@user, @t1.id, 1).run
+    TaskInteractors::ReopenTask.new(@user, @t2.id).run
+    TaskInteractors::DeleteTask.new(@user, @t3.id).run
   end
 end

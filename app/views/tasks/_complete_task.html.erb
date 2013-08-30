@@ -3,4 +3,5 @@
 	<span class="date">(<%= task.completed_at_for_user %>)</span>
 	<%= task.label_for self %>
 	<%= link_to_remove task %>
+	<%= task.link_to_activities self, task %>
 <% end %>

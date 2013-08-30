@@ -16,13 +16,16 @@ Todolist::Application.routes.draw do
       post 'reopen'
       post 'reposition'
     end
+    resources :activities, only: [:index]
   end
   
   resources :activities, only: [:index]
   
   namespace :api, defaults: {format: 'json'} do
     namespace :v1 do
-      resources :tasks, except: [:new, :edit]
+      resources :tasks, except: [:new, :edit] do
+        resources :activities, only: [:index]
+      end
       resources :activities, only: [:index]
       resources :me, only: [:index]
     end

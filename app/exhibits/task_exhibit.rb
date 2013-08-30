@@ -12,4 +12,8 @@ class TaskExhibit < Exhibit
   def checkbox_for_task(template, path)
   	template.check_box_tag task_id(self), "1", self.completed, data: { url: path, method: 'POST', remote: true }, class: 'todo'
   end
+  
+  def link_to_activities(template, task)
+    template.link_to "Activity feed", template.task_activities_path(task)
+  end
 end

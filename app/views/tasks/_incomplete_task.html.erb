@@ -4,4 +4,5 @@
 	<%= task.label_for self %>
 	<%= link_to 'Edit', edit_task_path(task), remote: true %>
 	<%= link_to_remove task %>
+	<%= task.link_to_activities self, task %>
 <% end %>

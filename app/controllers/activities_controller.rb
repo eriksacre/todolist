@@ -1,5 +1,8 @@
 class ActivitiesController < ApplicationController
+  include SubjectHelper
+
   def index
-    @activities = e ActivitiesViewModel.new
+    find_subject Task
+    @activities = e ActivitiesViewModel.new(@subject)
   end
 end

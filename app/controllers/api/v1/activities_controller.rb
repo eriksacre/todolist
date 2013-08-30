@@ -1,10 +1,13 @@
 module Api
   module V1
     class ActivitiesController < Api::ApiController
+      include SubjectHelper
+
       MAX_ACTIVITIES = 50
       
       def index
-        @activities = Activity.since(since, MAX_ACTIVITIES)
+        find_subject Task
+        @activities = Activity.since(since, MAX_ACTIVITIES, @subject)
       end
       
       private
