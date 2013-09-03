@@ -14,14 +14,10 @@ module TaskInteractors
     def perform
       task.find(@id).tap do |task|
         TaskPolicies::RepositionableTaskPolicy.new(task).enforce
-        @old_position = task.position # TODO: Refactor
+        track task, :position
         task_position_service.move(task, @new_position)
         task.save!
       end
-    end
-    
-    def log_specifics activity, task
-      activity.add_parameter :position, @old_position, @new_position
     end
   end
 end

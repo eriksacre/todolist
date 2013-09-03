@@ -63,7 +63,6 @@ describe ActivityService do
   end
 
   context "Storing the activity in the database" do
-    # TODO: make storing the activity a decorator so the base class is abstracted from persistence
     def create_task title
       task = TaskInteractors::CreateTask.new(user, title)
       task.new_activity_service = ActivityService.new

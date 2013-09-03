@@ -14,14 +14,10 @@ module TaskInteractors
     def perform
       task.find(@task_id).tap do |task|
         TaskPolicies::ModifyableTaskPolicy.new(task).enforce
-        @old_title = task.title # TODO: Refactor
+        track task, :title
         task.title = @title
         task.save!
       end
-    end
-    
-    def log_specifics activity, task
-      activity.add_parameter :title, @old_title, @title
     end
   end
 end

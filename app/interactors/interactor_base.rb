@@ -15,6 +15,18 @@ class InteractorBase
   
   def initialize(current_user)
     @current_user = current_user
+    @tracked = []
+  end
+  
+  def track(object, attribute)
+    @tracked << { object: object, attribute: attribute, old_value: object.send(attribute) }
+  end
+  
+  def log_tracked_objects(activity)
+    @tracked.each do |tracked_object|
+      attribute = tracked_object[:attribute]
+      activity.add_parameter attribute, tracked_object[:old_value], tracked_object[:object].send(attribute)
+    end
   end
   
   def run
@@ -29,6 +41,7 @@ class InteractorBase
       activity.action = self.class.name
       activity.recorded_at = object.updated_at
       activity.add_related object
+      log_tracked_objects activity
       log_specifics activity, object
       activity.log!
     end

@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   
   before_action :ensure_authenticated
   helper_method :current_user
-  
+
   private
     def params_id
       params[:id].to_i
