@@ -10,21 +10,12 @@ class TasksController < ApplicationController
   end
   
   def create
-    bc :create_task, title
-  end
-  
-  def create_task_succeeded(task)
-    @task = e task
+    @task = bc :create_task, title
     render "create"
-  end
-  
-  def create_task_failed(exception)
-    raise exception if !exception.is_a?(ActiveRecord::RecordInvalid) # TODO: Refactor
+  rescue ActiveRecord::RecordInvalid => exception
     @errors = exception.record.errors
     render template: "tasks/error"
   end
-  
-  private :create_task_succeeded, :create_task_failed
   
   def destroy
     @task = bc :delete_task, params_id
@@ -36,21 +27,12 @@ class TasksController < ApplicationController
   end
   
   def update
-    bc :update_task, params_id, title
-  end
-  
-  def update_task_succeeded(task)
-    @task = e task
+    @task = bc :update_task, params_id, title
     render "show"
-  end
-  
-  def update_task_failed(exception)
-    raise exception if !exception.is_a?(ActiveRecord::RecordInvalid) # TODO: Refactor
+  rescue ActiveRecord::RecordInvalid => exception
     @task = e exception.record
     render "edit"
   end
-  
-  private :update_task_succeeded, :update_task_failed
   
   def show
     @task = e Task.find(params_id)
