@@ -1,2 +1,4 @@
-$("#show-more").remove();
-$("#complete-tasks").html("<%= j render partial: "complete_task", collection: @completed, as: 'task' %>");
+<% cache Task.maximum(:updated_at) do %>
+	$("#show-more").remove();
+	$("#complete-tasks").html("<%= j render partial: "complete_task", collection: @completed, as: 'task' %>");
+<% end %>
