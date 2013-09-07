@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby "2.0.0"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.0'
@@ -16,8 +17,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-gem 'execjs', '1.4.0'
-gem 'multi_json', '1.7.8' # 1.7.9 causes error when compiling the assets
+gem 'execjs'
 # gem 'therubyracer', platforms: :ruby
 
 # Use jquery as the JavaScript library
@@ -48,7 +48,6 @@ end
 
 group :test do
   gem 'guard-rspec'
-  # gem 'cucumber-rails', require: false  # At this time cucumber-rails is not yet compatible with Rails 4!
   gem 'database_cleaner', '1.0.1'
   gem 'simplecov', require: false
   gem 'poltergeist'

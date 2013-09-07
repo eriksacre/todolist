@@ -20,7 +20,7 @@ describe "/api/v1/me", type: :api do
     http_authenticate(user.email, user.password)
     get url, {}, @env
     expect(response.code).to eq "200"
-    expect(json["email"]).to eq user.email
-    expect(json["api_token"]).to eq user.api_token
+    expect(json[:email]).to eq user.email
+    expect(json[:api_token]).to eq user.api_token
   end
 end

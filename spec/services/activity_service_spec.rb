@@ -90,20 +90,20 @@ describe ActivityService do
       expect(activity.user_id).to eq(user.id)
       expect(activity.action).to eq("task_interactors/create_task")
       expect(activity.recorded_at).to eq(@task.updated_at)
-      expect(JSON.parse(activity.info)).to eq({
-        "parameters" => {
-          "title" => @task.title
+      expect(JSON.parse(activity.info, symbolize_names: true)).to eq({
+        parameters: {
+          title: @task.title
         },
-        "related_objects" => [
+        related_objects: [
           {
-            "type" => @task.class.name,
-            "id" => @task.id,
-            "title" => @task.title
+            type: @task.class.name,
+            id: @task.id,
+            title: @task.title
           },
           {
-            "type" => @task2.class.name,
-            "id" => @task2.id,
-            "title" => @task2.title
+            type: @task2.class.name,
+            id: @task2.id,
+            title: @task2.title
           }
         ]
       })

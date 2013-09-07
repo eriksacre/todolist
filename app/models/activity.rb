@@ -36,7 +36,7 @@ class Activity < ActiveRecord::Base
     end
     
     def self.ui_order
-      order("recorded_at desc, id desc")
+      order(recorded_at: :desc, id: :desc)
     end
     
     # Required lazy loading

@@ -4,11 +4,11 @@ class ActivityExhibit < Exhibit
   end
   
   def activity_info
-    @activity_info ||= JSON.parse(info)
+    @activity_info ||= JSON.parse(info, symbolize_names: true)
   end
   
   def title
-    activity_info["related_objects"][0]["title"]
+    activity_info[:related_objects][0][:title]
   end
   
   ACTION_TEXT = {
@@ -32,8 +32,8 @@ class ActivityExhibit < Exhibit
   }
   
   def api_url
-    id = @activity_info["related_objects"][0]["id"]
-    type = @activity_info["related_objects"][0]["type"]
+    id = @activity_info[:related_objects][0][:id]
+    type = @activity_info[:related_objects][0][:type]
     
     API_PATH[type].call(id, @context) + title.slug
   end
