@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   interactor_namespace :task
-  
+
   def index
     @task_list = e TaskListViewModel.new
   end
